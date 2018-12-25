@@ -1,0 +1,9 @@
+#goal definition
+bool engage
+float32 timeout
+---
+#result definition
+bool data
+---
+#feedback
+bool data

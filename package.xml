@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>suction_pump</name>
+  <version>0.0.1</version>
+  <description>
+   Suction pump interface. Supports VG-10 pump.
+  </description>
+  <license>Commercial</license>
+  <maintainer email="gautham.manoharan@rapyuta-robotics.com">Gautham Manoharan</maintainer>
+  <maintainer email="bhuvanchandra.dv@rapyuta-robotics.com">Bhuvanchandra</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <depend>roscpp</depend>
+  <depend>actionlib</depend>
+  <depend>actionlib_msgs</depend>
+  <!-- <depend>libsoc</depend> -->
+
+  <exec_depend>message_generation</exec_depend>
+</package>
