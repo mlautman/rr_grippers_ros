@@ -84,6 +84,7 @@ public:
 
     bool value() {
         if (_type == Type::INPUT) {
+            std::cout << "**********" << _pin_str << std::endl;
             return libsoc_gpio_get_level(_pin);
         } else {
             ROS_ERROR("Cannot read value of output type gpio %s.", _pin_str.c_str());
@@ -97,15 +98,19 @@ private:
     Type _type;
 };
 
+// todo use array for status in pump class
+// constexpr int numOfPumpStatus = 2;
 class Pump {
 public:
-    Pump(const std::string& trigger_pin, const std::string& status_pin)
+    Pump(const std::string& trigger_pin, const std::string& status_pin0
+    , const std::string& status_pin1)
         : _trigger(trigger_pin, Gpio::Type::OUTPUT)
-        , _status(status_pin, Gpio::Type::INPUT) {
+        , _status0(status_pin0, Gpio::Type::INPUT)
+        , _status1(status_pin1, Gpio::Type::INPUT) {
     }
 
     bool init(BoardConfig& config) {
-        return _trigger.init(config) && _status.init(config);
+        return _trigger.init(config) && _status0.init(config) && _status1.init(config);
     }
 
     void enable() {
@@ -117,12 +122,23 @@ public:
     }
 
     bool is_attached() {
-        return !_status.value();
+        return (!_status0.value() && !_status1.value());
     }
+
+    bool value(unsigned int num) {
+        if(num == 0){
+            _status0.value();
+        }
+        else if(num==1){
+            _status1.value();
+        }
+    }
+
 
 private:
     Gpio _trigger;
-    Gpio _status;
+    Gpio _status0;
+    Gpio _status1;
 };
 
 } // namespace rapyuta

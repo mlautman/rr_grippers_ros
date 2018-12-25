@@ -1,5 +1,6 @@
-#/*
- todo add SuctionPumpActionServer class and two children class which handle single pump and double pump
+/*
+Todo: Create parent class which handle Suctionpump and children class which handle single/double pu
+Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 */
 
 #include <ros/ros.h>
@@ -8,25 +9,30 @@
 #include <suction_pump/suction_pump.hpp>
 #include <suction_pump/SuctionPumpAction.h>
 
-#define PUMP_A_TRIGGER_GPIO "DIO1_PIN_11"
-#define PUMP_A_STATUS_GPIO "DIO1_PIN_1"
-// #define PUMP_B_TRIGGER_GPIO "DIO1_PIN_12"
-// #define PUMP_B_STATUS_GPIO "DIO1_PIN_2"
+#define PUMP_TRIGGER_GPIO "DIO1_PIN_11"
+#define PUMP_STATUS_GPIO0 "DIO1_PIN_1"
+#define PUMP_STATUS_GPIO1 "DIO1_PIN_2"
 
 namespace rapyuta {
+
+enum PumpFeeedback{
+    NothingSucked = 0,
+    HalfSucked = 1,
+    FullSucked = 2
+};
 
 class SuctionPumpActionServer {
 public:
     SuctionPumpActionServer(ros::NodeHandle& nh, const std::string& action_name)
-            : _pump_a(PUMP_A_TRIGGER_GPIO, PUMP_A_STATUS_GPIO)
-            // , _pump_b(PUMP_B_TRIGGER_GPIO, PUMP_B_STATUS_GPIO)
+            : _pump(PUMP_TRIGGER_GPIO, PUMP_STATUS_GPIO0, PUMP_STATUS_GPIO1)
             , _server(nh, action_name, boost::bind(&SuctionPumpActionServer::action_cb, this, _1), false)
             , _action_name(action_name) {
     }
 
     bool init() {
-        if (_pump_a.init(_config)){// && _pump_b.init(_config)) {
+        if (_pump.init(_config)){
             _server.start();
+            _pump.enable(); // set off
             ROS_INFO("%s: Started", _action_name.c_str());
             return true;
         }
@@ -35,50 +41,60 @@ public:
 
     void action_cb(const suction_pump::SuctionPumpGoalConstPtr& goal) {
         suction_pump::SuctionPumpFeedback feedback;
-        feedback.data = true; // @todo FIXME: This should be false
+        feedback.data = NothingSucked; 
         ros::Time start_time = ros::Time::now();
         if (goal->engage) {
-            _pump_a.enable();
-            // _pump_b.enable();
+            _pump.disable(); //FXP-SW is normally off. Disable -> sucking
         } else {
-            _pump_a.disable();
-            // _pump_b.disable();
+            _pump.enable();
         }
+
+        ros::Rate loop_rate(10);
         while((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
             if (_server.isPreemptRequested() || !ros::ok()) {
                 ROS_INFO("%s: Preempted", _action_name.c_str());
                 _server.setPreempted();
                 break;
             }
-            if (goal->engage && _pump_a.is_attached()){// && _pump_b.is_attached()) {
-                ROS_INFO("%s: Suction pump attached", _action_name.c_str());
-                feedback.data = true;
-                break;
+            if (goal->engage){
+                bool output[2] = {_pump.value(0), _pump.value(1)}; 
+                ROS_INFO("Suction pomp status out1:%d, out2:%d", output[0], output[1]);
+                
+                if(!output[0]){
+                    feedback.data = NothingSucked;
+                }
+                else{
+                    if(!output[1]){
+                        feedback.data= HalfSucked;
+                    }
+                    else{
+                        feedback.data= FullSucked;
+                    }
+                    break;
+                }
             }
-            if (!goal->engage && !_pump_a.is_attached()){ //&& !_pump_b.is_attached()) {
-                ROS_INFO("%s: Suction pump detached", _action_name.c_str());
-                feedback.data = true;
+            else{
                 break;
             }
             _server.publishFeedback(feedback);
+            loop_rate.sleep();
         }
         suction_pump::SuctionPumpResult result;
         result.data = true;
-        if (feedback.data) {
+        if (feedback.data || !goal->engage) {
             _server.setSucceeded(result);
         } else {
             if (goal->engage) {
-                _pump_a.disable();
-                // _pump_b.disable();
+                _pump.enable();
             }
+            result.data = false;
             ROS_ERROR("%s: Aborted", _action_name.c_str());
             _server.setAborted(result);
         }
     }
 
 private:
-    Pump _pump_a;
-    // Pump _pump_b;
+    Pump _pump;
     BoardConfig _config;
     actionlib::SimpleActionServer<suction_pump::SuctionPumpAction> _server;
     std::string _action_name;

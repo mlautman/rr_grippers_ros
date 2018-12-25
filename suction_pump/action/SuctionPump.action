@@ -6,4 +6,4 @@ float32 timeout
 bool data
 ---
 #feedback
-bool data
+int8 data
