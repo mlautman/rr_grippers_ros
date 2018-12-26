@@ -1,5 +1,8 @@
 /*
-Todo: Create parent class which handle Suctionpump and children class which handle single/double pu
+Todo
+- handle multiple pumps
+- change number of status and pums to 
+
 Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 */
 
