@@ -9,11 +9,15 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 #include <suction_pump/suction_pump.hpp>
 #include <suction_pump/SuctionPumpAction.h>
 
-#define PUMP_TRIGGER_GPIO "DIO1_PIN_11"
-#define PUMP_STATUS_GPIO0 "DIO1_PIN_1"
-#define PUMP_STATUS_GPIO1 "DIO1_PIN_2"
 
 namespace rapyuta {
+
+constexpr int NUM_OF_PUMP_STATUS = 2;
+constexpr char PUMP_TRIGGER_GPIO[] = "DIO1_PIN_11";
+constexpr char PUMP_STATUS_GPIO[][20] = {
+    "DIO1_PIN_1",
+    "DIO1_PIN_2"
+};
 
 enum PumpFeeedback{
     NothingSucked = 0,
@@ -24,7 +28,7 @@ enum PumpFeeedback{
 class SuctionPumpActionServer {
 public:
     SuctionPumpActionServer(ros::NodeHandle& nh, const std::string& action_name)
-            : _pump(PUMP_TRIGGER_GPIO, PUMP_STATUS_GPIO0, PUMP_STATUS_GPIO1)
+            : _pump(PUMP_TRIGGER_GPIO, PUMP_STATUS_GPIO, NUM_OF_PUMP_STATUS, true)
             , _server(nh, action_name, boost::bind(&SuctionPumpActionServer::action_cb, this, _1), false)
             , _action_name(action_name) {
     }
@@ -32,7 +36,7 @@ public:
     bool init() {
         if (_pump.init(_config)){
             _server.start();
-            _pump.enable(); // set off
+            _pump.disable(); // set off
             ROS_INFO("%s: Started", _action_name.c_str());
             return true;
         }
@@ -44,9 +48,9 @@ public:
         feedback.data = NothingSucked; 
         ros::Time start_time = ros::Time::now();
         if (goal->engage) {
-            _pump.disable(); //FXP-SW is normally off. Disable -> sucking
-        } else {
             _pump.enable();
+        } else {
+            _pump.disable();
         }
 
         ros::Rate loop_rate(10);
@@ -70,6 +74,7 @@ public:
                     else{
                         feedback.data= FullSucked;
                     }
+                    _server.publishFeedback(feedback);
                     break;
                 }
             }
@@ -80,14 +85,13 @@ public:
             loop_rate.sleep();
         }
         suction_pump::SuctionPumpResult result;
-        result.data = true;
-        if (feedback.data || !goal->engage) {
+        result.data = feedback.data;
+        if (feedback.data>0 || !goal->engage) {
             _server.setSucceeded(result);
         } else {
             if (goal->engage) {
-                _pump.enable();
+                _pump.disable();
             }
-            result.data = false;
             ROS_ERROR("%s: Aborted", _action_name.c_str());
             _server.setAborted(result);
         }

@@ -84,7 +84,6 @@ public:
 
     bool value() {
         if (_type == Type::INPUT) {
-            std::cout << "**********" << _pin_str << std::endl;
             return libsoc_gpio_get_level(_pin);
         } else {
             ROS_ERROR("Cannot read value of output type gpio %s.", _pin_str.c_str());
@@ -98,47 +97,63 @@ private:
     Type _type;
 };
 
-// todo use array for status in pump class
-// constexpr int numOfPumpStatus = 2;
 class Pump {
+typedef std::unique_ptr<Gpio> Gpio_ptr;
 public:
-    Pump(const std::string& trigger_pin, const std::string& status_pin0
-    , const std::string& status_pin1)
-        : _trigger(trigger_pin, Gpio::Type::OUTPUT)
-        , _status0(status_pin0, Gpio::Type::INPUT)
-        , _status1(status_pin1, Gpio::Type::INPUT) {
+    Pump(const std::string& trigger_pin, const char status_pins[][20], const int numOfStatus,
+        const bool normallyOn=false)
+        : _trigger(trigger_pin, Gpio::Type::OUTPUT), _normallyOn(normallyOn)
+        {   
+            for (int i=0; i< numOfStatus; i++){
+                _status.push_back(Gpio_ptr(new Gpio(status_pins[i], Gpio::Type::INPUT)));
+            }
     }
 
     bool init(BoardConfig& config) {
-        return _trigger.init(config) && _status0.init(config) && _status1.init(config);
+        for(Gpio_ptr& status: _status){
+            if(!status->init(config)){
+                return false;
+            }
+        }        
+        return _trigger.init(config);
     }
 
     void enable() {
-        _trigger.enable();
+        if(_normallyOn){
+            _trigger.disable();
+        }
+        else{
+            _trigger.enable();
+        }
     }
 
     void disable() {
-        _trigger.disable();
+        if(_normallyOn){
+            _trigger.enable();
+        }
+        else{
+            _trigger.disable();
+        }
     }
 
     bool is_attached() {
-        return (!_status0.value() && !_status1.value());
+        for(Gpio_ptr& status: _status){
+            if(!status->value()){
+                return false;
+            }
+        }
+        return true;
     }
 
     bool value(unsigned int num) {
-        if(num == 0){
-            _status0.value();
-        }
-        else if(num==1){
-            _status1.value();
-        }
+        return _status[num]->value();
     }
 
 
 private:
     Gpio _trigger;
-    Gpio _status0;
-    Gpio _status1;
+    std::vector<Gpio_ptr>  _status;
+    bool _normallyOn;
 };
 
 } // namespace rapyuta

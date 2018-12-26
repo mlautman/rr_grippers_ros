@@ -3,7 +3,7 @@ bool engage
 float32 timeout
 ---
 #result definition
-bool data
+int8 data
 ---
 #feedback
 int8 data
