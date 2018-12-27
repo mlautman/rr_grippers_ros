@@ -91,44 +91,78 @@ bool Gpio::value()
     }
 }
 
-Pump::Pump(const std::string& trigger_pin, const char status_pins[][20], const int numOfStatus, const bool normallyOn)
-        : _trigger(trigger_pin, Gpio::Type::OUTPUT)
-        , _normallyOn(normallyOn)
+Pump::Pump(const char triggerPins[][20], const int numOfTrigger, 
+           const char statusPins[][20], const int numOfStatus, const bool normallyOn)
+        : _normallyOn(normallyOn)
 {
+    for (int i = 0; i < numOfTrigger; i++) {
+        _trigger.push_back(Gpio_ptr(new Gpio(triggerPins[i], Gpio::Type::OUTPUT)));
+    }
     for (int i = 0; i < numOfStatus; i++) {
-        _status.push_back(Gpio_ptr(new Gpio(status_pins[i], Gpio::Type::INPUT)));
+        _status.push_back(Gpio_ptr(new Gpio(statusPins[i], Gpio::Type::INPUT)));
     }
 }
 
 bool Pump::init(BoardConfig& config)
 {
+    for (Gpio_ptr& trigger : _trigger) {
+        if (!trigger->init(config)) {
+            return false;
+        }
+    }
     for (Gpio_ptr& status : _status) {
         if (!status->init(config)) {
             return false;
         }
     }
-    return _trigger.init(config);
+    return true;
 }
 
 void Pump::enable()
 {
     if (_normallyOn) {
-        _trigger.disable();
+        for (Gpio_ptr& trigger : _trigger) {
+            trigger->disable();
+        }
     } else {
-        _trigger.enable();
+        for (Gpio_ptr& trigger : _trigger) {
+            trigger->enable();
+        }
+    }    
+}
+
+void Pump::enable(unsigned int num)
+{
+    if (_normallyOn) {
+        _trigger[num]->disable();
+    } else {
+        _trigger[num]->enable();
     }
 }
 
 void Pump::disable()
 {
     if (_normallyOn) {
-        _trigger.enable();
+        for (Gpio_ptr& trigger : _trigger) {
+            trigger->enable();
+        }
     } else {
-        _trigger.disable();
+        for (Gpio_ptr& trigger : _trigger) {
+            trigger->disable();
+        }
+    }    
+}
+
+void Pump::disable(unsigned int num)
+{
+    if (_normallyOn) {
+        _trigger[num]->enable();
+    } else {
+        _trigger[num]->disable();
     }
 }
 
-bool Pump::is_attached()
+bool Pump::isAttached()
 {
     for (Gpio_ptr& status : _status) {
         if (!status->value()) {

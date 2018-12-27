@@ -1,6 +1,7 @@
 /*
 Todo
 - handle multiple pumps
+- add comment
 - change number of status and pums to
 
 Last Update 20181222, yu.okamoto@rapyuta-robotics.com
@@ -11,26 +12,21 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 
 #include <suction_pump/SuctionPumpAction.h>
 #include <suction_pump/suction_pump.hpp>
+#include "suction_pump/suction_pump_action_server.hpp"
 
 namespace rapyuta
 {
 
+constexpr int NUM_OF_PUMP_TRIGGER = 1;
+constexpr char PUMP_TRIGGER_GPIO[][GPIO_NAME_LENGTH] = {"DIO1_PIN_11"};
 constexpr int NUM_OF_PUMP_STATUS = 2;
-constexpr char PUMP_TRIGGER_GPIO[] = "DIO1_PIN_11";
-constexpr char PUMP_STATUS_GPIO[][20] = {"DIO1_PIN_1", "DIO1_PIN_2"};
-
-enum PumpFeeedback
-{
-    NothingSucked = 0,
-    HalfSucked = 1,
-    FullSucked = 2
-};
+constexpr char PUMP_STATUS_GPIO[][GPIO_NAME_LENGTH] = {"DIO1_PIN_1", "DIO1_PIN_2"};
 
 class SuctionPumpActionServer
 {
 public:
     SuctionPumpActionServer(ros::NodeHandle& nh, const std::string& action_name)
-            : _pump(PUMP_TRIGGER_GPIO, PUMP_STATUS_GPIO, NUM_OF_PUMP_STATUS, true)
+            : _pump(PUMP_TRIGGER_GPIO, NUM_OF_PUMP_TRIGGER, PUMP_STATUS_GPIO, NUM_OF_PUMP_STATUS, true)
             , _server(nh, action_name, boost::bind(&SuctionPumpActionServer::action_cb, this, _1), false)
             , _action_name(action_name)
     {
@@ -50,7 +46,7 @@ public:
     void action_cb(const suction_pump::SuctionPumpGoalConstPtr& goal)
     {
         suction_pump::SuctionPumpFeedback feedback;
-        feedback.data = NothingSucked;
+        feedback.data = NothingAttached;
         ros::Time start_time = ros::Time::now();
         if (goal->engage) {
             _pump.enable();
@@ -70,12 +66,12 @@ public:
                 ROS_INFO("Suction pomp status out1:%d, out2:%d", output[0], output[1]);
 
                 if (!output[0]) {
-                    feedback.data = NothingSucked;
+                    feedback.data = NothingAttached;
                 } else {
                     if (!output[1]) {
-                        feedback.data = HalfSucked;
+                        feedback.data = HalfAttached;
                     } else {
-                        feedback.data = FullSucked;
+                        feedback.data = FullAttached;
                     }
                     _server.publishFeedback(feedback);
                     break;

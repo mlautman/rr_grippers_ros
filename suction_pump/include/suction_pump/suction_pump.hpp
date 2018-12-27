@@ -12,6 +12,8 @@
 namespace rapyuta
 {
 
+constexpr int GPIO_NAME_LENGTH=20;
+
 class BoardConfig
 {
 public:
@@ -48,15 +50,19 @@ class Pump
 {
 public:
     typedef std::unique_ptr<Gpio> Gpio_ptr;
-    Pump(const std::string& trigger_pin, const char status_pins[][20], const int numOfStatus, const bool normallyOn = false);
+    Pump(const char triggerPins[][GPIO_NAME_LENGTH], const int numOfTrigger, 
+         const char statusPins[][GPIO_NAME_LENGTH], const int numOfStatus, const bool normallyOn);
+
     bool init(BoardConfig& config);
     void enable();
+    void enable(unsigned int num);
     void disable();
-    bool is_attached();
+    void disable(unsigned int num);
+    bool isAttached();
     bool value(unsigned int num);
 
 private:
-    Gpio _trigger;
+    std::vector<Gpio_ptr> _trigger;
     std::vector<Gpio_ptr> _status;
     bool _normallyOn;
 };
