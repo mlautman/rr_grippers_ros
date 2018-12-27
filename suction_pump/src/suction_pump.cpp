@@ -91,8 +91,7 @@ bool Gpio::value()
     }
 }
 
-Pump::Pump(const char triggerPins[][20], const int numOfTrigger, 
-           const char statusPins[][20], const int numOfStatus, const bool normallyOn)
+Pump::Pump(const char triggerPins[][20], const int numOfTrigger, const char statusPins[][20], const int numOfStatus, const bool normallyOn)
         : _normallyOn(normallyOn)
 {
     for (int i = 0; i < numOfTrigger; i++) {
@@ -128,7 +127,7 @@ void Pump::enable()
         for (Gpio_ptr& trigger : _trigger) {
             trigger->enable();
         }
-    }    
+    }
 }
 
 void Pump::enable(unsigned int num)
@@ -150,7 +149,7 @@ void Pump::disable()
         for (Gpio_ptr& trigger : _trigger) {
             trigger->disable();
         }
-    }    
+    }
 }
 
 void Pump::disable(unsigned int num)

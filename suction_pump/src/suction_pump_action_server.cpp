@@ -10,9 +10,9 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 #include <actionlib/server/simple_action_server.h>
 #include <ros/ros.h>
 
+#include "suction_pump/suction_pump_action_server.hpp"
 #include <suction_pump/SuctionPumpAction.h>
 #include <suction_pump/suction_pump.hpp>
-#include "suction_pump/suction_pump_action_server.hpp"
 
 namespace rapyuta
 {

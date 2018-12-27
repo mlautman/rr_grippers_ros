@@ -12,8 +12,11 @@
 namespace rapyuta
 {
 
-constexpr int GPIO_NAME_LENGTH=20;
+constexpr int GPIO_NAME_LENGTH = 20;
 
+/*
+    libsoc board conig class
+*/
 class BoardConfig
 {
 public:
@@ -25,6 +28,9 @@ private:
     board_config* _bc;
 };
 
+/*
+    gpio interface class with libsoc
+*/
 class Gpio
 {
 public:
@@ -36,9 +42,9 @@ public:
     explicit Gpio(const std::string& pin_str, const Type& type);
     ~Gpio();
     bool init(BoardConfig& config);
-    void enable();
-    void disable();
-    bool value();
+    void enable();  // set pin high
+    void disable(); // set pin low
+    bool value();   // return pin level
 
 private:
     gpio* _pin;
@@ -46,20 +52,23 @@ private:
     Type _type;
 };
 
+/*
+    Pump interface which have trigger and status gpio class
+*/
 class Pump
 {
 public:
     typedef std::unique_ptr<Gpio> Gpio_ptr;
-    Pump(const char triggerPins[][GPIO_NAME_LENGTH], const int numOfTrigger, 
-         const char statusPins[][GPIO_NAME_LENGTH], const int numOfStatus, const bool normallyOn);
+    Pump(const char triggerPins[][GPIO_NAME_LENGTH], const int numOfTrigger, const char statusPins[][GPIO_NAME_LENGTH], const int numOfStatus,
+            const bool normallyOn = false);
 
     bool init(BoardConfig& config);
-    void enable();
-    void enable(unsigned int num);
-    void disable();
-    void disable(unsigned int num);
-    bool isAttached();
-    bool value(unsigned int num);
+    void enable();                  // set all trigger pin high
+    void enable(unsigned int num);  // set pin at num high
+    void disable();                 // set all trigger pin low
+    void disable(unsigned int num); // set pin at num low
+    bool isAttached();              // return true if all status pin are high
+    bool value(unsigned int num);   // return pin at num level
 
 private:
     std::vector<Gpio_ptr> _trigger;
