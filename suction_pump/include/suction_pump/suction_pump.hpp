@@ -1,17 +1,19 @@
 #pragma once
 
-#include <unistd.h>
-#include <stdint.h>
 #include <errno.h>
+#include <stdint.h>
+#include <unistd.h>
 
 #include <ros/ros.h>
 
-#include <libsoc_gpio.h>
 #include <libsoc_board.h>
+#include <libsoc_gpio.h>
 
-namespace rapyuta {
+namespace rapyuta
+{
 
-class BoardConfig {
+class BoardConfig
+{
 public:
     BoardConfig();
     ~BoardConfig();
@@ -21,10 +23,15 @@ private:
     board_config* _bc;
 };
 
-class Gpio {
+class Gpio
+{
 public:
-    enum class Type { INPUT, OUTPUT};
-    explicit Gpio(const std::string& pin_str, const Type& type); 
+    enum class Type
+    {
+        INPUT,
+        OUTPUT
+    };
+    explicit Gpio(const std::string& pin_str, const Type& type);
     ~Gpio();
     bool init(BoardConfig& config);
     void enable();
@@ -37,11 +44,11 @@ private:
     Type _type;
 };
 
-class Pump {
+class Pump
+{
 public:
     typedef std::unique_ptr<Gpio> Gpio_ptr;
-    Pump(const std::string& trigger_pin, const char status_pins[][20], const int numOfStatus,
-        const bool normallyOn=false);
+    Pump(const std::string& trigger_pin, const char status_pins[][20], const int numOfStatus, const bool normallyOn = false);
     bool init(BoardConfig& config);
     void enable();
     void disable();
@@ -50,7 +57,7 @@ public:
 
 private:
     Gpio _trigger;
-    std::vector<Gpio_ptr>  _status;
+    std::vector<Gpio_ptr> _status;
     bool _normallyOn;
 };
 
