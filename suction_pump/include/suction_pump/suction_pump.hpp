@@ -59,7 +59,7 @@ class Pump
 {
 public:
     typedef std::unique_ptr<Gpio> Gpio_ptr;
-    Pump(const char triggerPins[][GPIO_NAME_LENGTH], const int numOfTrigger, const char statusPins[][GPIO_NAME_LENGTH], const int numOfStatus,
+    Pump(const std::vector<std::string> triggerPins, const int numOfTrigger, const std::vector<std::string> statusPins, const int numOfStatus,
             const bool normallyOn = false);
 
     bool init(BoardConfig& config);

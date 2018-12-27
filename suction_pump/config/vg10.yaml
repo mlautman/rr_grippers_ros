@@ -1,0 +1,9 @@
+trigger_num: 2
+status_num: 2
+
+normally_on: false
+
+trigger_gpio0: "DIO1_PIN_11"
+trigger_gpio1: "DIO1_PIN_12"
+status_gpio0: "DIO1_PIN_1"
+status_gpio1: "DIO1_PIN_2"

@@ -91,7 +91,7 @@ bool Gpio::value()
     }
 }
 
-Pump::Pump(const char triggerPins[][20], const int numOfTrigger, const char statusPins[][20], const int numOfStatus, const bool normallyOn)
+Pump::Pump(const std::vector<std::string> triggerPins, const int numOfTrigger, const std::vector<std::string> statusPins, const int numOfStatus, const bool normallyOn)
         : _normallyOn(normallyOn)
 {
     for (int i = 0; i < numOfTrigger; i++) {
