@@ -13,6 +13,7 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 #include "suction_pump/suction_pump_action_server.hpp"
 #include <suction_pump/SuctionPumpAction.h>
 #include <suction_pump/suction_pump.hpp>
+#include "suction_pump/suction_pump_action_server.hpp"
 
 namespace rapyuta
 {
