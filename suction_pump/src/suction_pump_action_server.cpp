@@ -1,8 +1,6 @@
 /*
 Todo
-- handle multiple pumps
-- add comment
-- change number of status and pums to
+- change number of status and pums to ros param
 
 Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 */
@@ -13,7 +11,6 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 #include "suction_pump/suction_pump_action_server.hpp"
 #include <suction_pump/SuctionPumpAction.h>
 #include <suction_pump/suction_pump.hpp>
-#include "suction_pump/suction_pump_action_server.hpp"
 
 namespace rapyuta
 {
@@ -47,7 +44,7 @@ public:
     void action_cb(const suction_pump::SuctionPumpGoalConstPtr& goal)
     {
         suction_pump::SuctionPumpFeedback feedback;
-        feedback.data = NothingAttached;
+        feedback.status = goal->NOTHING;
         ros::Time start_time = ros::Time::now();
         if (goal->engage) {
             _pump.enable();
@@ -67,14 +64,16 @@ public:
                 ROS_INFO("Suction pomp status out1:%d, out2:%d", output[0], output[1]);
 
                 if (!output[0]) {
-                    feedback.data = NothingAttached;
+                    feedback.status = goal->NOTHING;
                 } else {
                     if (!output[1]) {
-                        feedback.data = HalfAttached;
+                        feedback.status = goal->HALF_COVER;
                     } else {
-                        feedback.data = FullAttached;
+                        feedback.status = goal->FULL_COVER;
                     }
-                    _server.publishFeedback(feedback);
+                }
+                _server.publishFeedback(feedback);
+                if(feedback.status >= goal->target_area){
                     break;
                 }
             } else {
@@ -83,9 +82,10 @@ public:
             _server.publishFeedback(feedback);
             loop_rate.sleep();
         }
+
         suction_pump::SuctionPumpResult result;
-        result.data = feedback.data;
-        if (feedback.data > 0 || !goal->engage) {
+        result.data = feedback.status;
+        if (feedback.status >= goal->target_area || !goal->engage) {
             _server.setSucceeded(result);
         } else {
             if (goal->engage) {
