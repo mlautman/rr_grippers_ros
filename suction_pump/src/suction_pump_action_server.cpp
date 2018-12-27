@@ -18,9 +18,9 @@ public:
             : _server(nh, action_name, boost::bind(&SuctionPumpActionServer::action_cb, this, _1), false)
             , _action_name(action_name)
     {
-        int trigger_num=0;
-        int status_num=0;
-        bool normallyOn=false;
+        int trigger_num = 0;
+        int status_num = 0;
+        bool normallyOn = false;
         std::vector<std::string> trigger_gpio;
         std::vector<std::string> status_gpio;
         std::string trigger, status;
@@ -28,12 +28,12 @@ public:
         nh.getParam("trigger_num", trigger_num);
         nh.getParam("status_num", status_num);
         nh.getParam("normally_on", normallyOn);
-        for(int i=0; i<trigger_num; i++){
-            nh.getParam("trigger_gpio"+std::to_string(i), trigger);
+        for (int i = 0; i < trigger_num; i++) {
+            nh.getParam("trigger_gpio" + std::to_string(i), trigger);
             trigger_gpio.push_back(trigger);
         }
-        for(int i=0; i<status_num; i++){
-            nh.getParam("status_gpio"+std::to_string(i), status);
+        for (int i = 0; i < status_num; i++) {
+            nh.getParam("status_gpio" + std::to_string(i), status);
             status_gpio.push_back(status);
         }
         _pump = std::unique_ptr<Pump>(new Pump(trigger_gpio, trigger_num, status_gpio, status_num, normallyOn));
@@ -82,7 +82,7 @@ public:
                     }
                 }
                 _server.publishFeedback(feedback);
-                if(feedback.status >= goal->target_area){
+                if (feedback.status >= goal->target_area) {
                     break;
                 }
             } else {
