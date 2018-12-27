@@ -11,6 +11,7 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 
 #include <suction_pump/SuctionPumpAction.h>
 #include <suction_pump/suction_pump.hpp>
+#include "suction_pump/suction_pump_action_server.hpp"
 
 namespace rapyuta
 {
@@ -18,13 +19,6 @@ namespace rapyuta
 constexpr int NUM_OF_PUMP_STATUS = 2;
 constexpr char PUMP_TRIGGER_GPIO[] = "DIO1_PIN_11";
 constexpr char PUMP_STATUS_GPIO[][20] = {"DIO1_PIN_1", "DIO1_PIN_2"};
-
-enum PumpFeeedback
-{
-    NothingSucked = 0,
-    HalfSucked = 1,
-    FullSucked = 2
-};
 
 class SuctionPumpActionServer
 {
@@ -50,7 +44,7 @@ public:
     void action_cb(const suction_pump::SuctionPumpGoalConstPtr& goal)
     {
         suction_pump::SuctionPumpFeedback feedback;
-        feedback.data = NothingSucked;
+        feedback.data = NothingAttached;
         ros::Time start_time = ros::Time::now();
         if (goal->engage) {
             _pump.enable();
@@ -70,12 +64,12 @@ public:
                 ROS_INFO("Suction pomp status out1:%d, out2:%d", output[0], output[1]);
 
                 if (!output[0]) {
-                    feedback.data = NothingSucked;
+                    feedback.data = NothingAttached;
                 } else {
                     if (!output[1]) {
-                        feedback.data = HalfSucked;
+                        feedback.data = HalfAttached;
                     } else {
-                        feedback.data = FullSucked;
+                        feedback.data = FullAttached;
                     }
                     _server.publishFeedback(feedback);
                     break;
