@@ -70,7 +70,7 @@ public:
             }
             if (goal->engage) {
                 bool output[2] = {_pump->value(0), _pump->value(1)};
-                ROS_INFO("Suction pomp status out1:%d, out2:%d", output[0], output[1]);
+                ROS_INFO("Suction pump status out1:%d, out2:%d", output[0], output[1]);
 
                 if (!output[0]) {
                     feedback.status = goal->NOTHING;
