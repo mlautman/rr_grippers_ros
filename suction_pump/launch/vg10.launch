@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <node pkg="suction_pump" type="suction_pump_action_server" name="suction_pump_vg10" output="screen"/>
+	<rosparam file="$(find suction_pump)/config/vg10.yaml" />
+</launch>

@@ -1,0 +1,14 @@
+uint8 NOTHING=0 
+uint8 HALF_COVER=1 #up: 200 < P < 350, down 340 > P > 190
+uint8 FULL_COVER=2 #down: 350 < P  down P > 340
+
+#goal definition
+bool engage
+float32 timeout
+uint8 target_area
+---
+#result definition
+int8 data
+---
+#feedback
+int8 status
