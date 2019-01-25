@@ -52,56 +52,59 @@ public:
 
     void action_cb(const suction_pump::SuctionPumpGoalConstPtr& goal)
     {
+        // Result and feedback
+        suction_pump::SuctionPumpResult result;
         suction_pump::SuctionPumpFeedback feedback;
         feedback.status = goal->NOTHING;
-        ros::Time start_time = ros::Time::now();
+
+        // Engage
         if (goal->engage) {
             _pump->enable();
-        } else {
-            _pump->disable();
-        }
 
-        ros::Rate loop_rate(10);
-        while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
-            if (_server.isPreemptRequested() || !ros::ok()) {
-                ROS_INFO("%s: Preempted", _action_name.c_str());
-                _server.setPreempted();
-                break;
-            }
-            if (goal->engage) {
+            // Wait for successful suction
+            ros::Rate loop_rate(10);
+            ros::Time start_time = ros::Time::now();
+            while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
+
+                // Check for preempted action
+                if (_server.isPreemptRequested() || !ros::ok()) {
+                    ROS_INFO("%s: Preempted", _action_name.c_str());
+                    _server.setPreempted();
+                    return;
+                }
+
+                // Get current suction status
                 bool output[2] = {_pump->value(0), _pump->value(1)};
                 ROS_INFO("Suction pump status out1:%d, out2:%d", output[0], output[1]);
+                feedback.status = goal->NOTHING;
+                if (output[0])
+                    feedback.status = goal->HALF_COVER;
+                if (output[0] && output[1])
+                    feedback.status = goal->FULL_COVER;
 
-                if (!output[0]) {
-                    feedback.status = goal->NOTHING;
-                } else {
-                    if (!output[1]) {
-                        feedback.status = goal->HALF_COVER;
-                    } else {
-                        feedback.status = goal->FULL_COVER;
-                    }
-                }
+                // Publish feedback and set result
                 _server.publishFeedback(feedback);
-                if (feedback.status >= goal->target_area) {
-                    break;
-                }
-            } else {
-                break;
-            }
-            _server.publishFeedback(feedback);
-            loop_rate.sleep();
-        }
+                result.data = feedback.status;
 
-        suction_pump::SuctionPumpResult result;
-        result.data = feedback.status;
-        if (feedback.status >= goal->target_area || !goal->engage) {
-            _server.setSucceeded(result);
-        } else {
-            if (goal->engage) {
-                _pump->disable();
+                // If successful, set action to succeeded
+                if (result.data >= goal->target_area)
+                {
+                    _server.setSucceeded(result);
+                    return;
+                }
+                loop_rate.sleep();
             }
+
+            // Action failed
+            _pump->disable();
             ROS_ERROR("%s: Aborted", _action_name.c_str());
             _server.setAborted(result);
+        }
+
+        // Disengage
+        if (!goal->engage) {
+            _pump->disable();
+            _server.setSucceeded(result);
         }
     }
 
