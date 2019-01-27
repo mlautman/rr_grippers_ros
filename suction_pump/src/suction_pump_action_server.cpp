@@ -112,6 +112,7 @@ public:
             result.data = goal->NOTHING;
 
             if(!output[0]){ //if already nothing, reurn success immediately
+                _pump->disable();
                 _server.setSucceeded(result);
                 return;
             }
