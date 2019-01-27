@@ -106,9 +106,19 @@ public:
 
         // Disengage
         if (!goal->engage) {
+
+            bool output[2] = {_pump->value(0), _pump->value(1)};
+            ROS_INFO("Suction pump status out1:%d, out2:%d", output[0], output[1]);
+            result.data = goal->NOTHING;
+
+            if(!output[0]){ //if already nothing, reurn success immediately
+                _server.setSucceeded(result);
+                return;
+            }
+
             _pump->disable();
-             while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
-             }
+            while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
+            }
             _server.setSucceeded(result);
         }
     }
