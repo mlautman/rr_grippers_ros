@@ -57,13 +57,14 @@ public:
         suction_pump::SuctionPumpFeedback feedback;
         feedback.status = goal->NOTHING;
 
+        ros::Rate loop_rate(10);
+        ros::Time start_time = ros::Time::now();
+
         // Engage
         if (goal->engage) {
             _pump->enable();
 
             // Wait for successful suction
-            ros::Rate loop_rate(10);
-            ros::Time start_time = ros::Time::now();
             while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
 
                 // Check for preempted action
@@ -77,10 +78,12 @@ public:
                 bool output[2] = {_pump->value(0), _pump->value(1)};
                 ROS_INFO("Suction pump status out1:%d, out2:%d", output[0], output[1]);
                 feedback.status = goal->NOTHING;
-                if (output[0])
+                if (output[0]){
                     feedback.status = goal->HALF_COVER;
-                if (output[0] && output[1])
+                }
+                if (output[0] && output[1]){
                     feedback.status = goal->FULL_COVER;
+                }
 
                 // Publish feedback and set result
                 _server.publishFeedback(feedback);
@@ -104,6 +107,8 @@ public:
         // Disengage
         if (!goal->engage) {
             _pump->disable();
+             while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
+             }
             _server.setSucceeded(result);
         }
     }
