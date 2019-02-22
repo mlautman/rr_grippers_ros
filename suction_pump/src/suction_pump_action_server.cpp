@@ -62,7 +62,8 @@ public:
 
         // Engage
         if (goal->engage) {
-            _pump->enable();
+            _pump->enable(0);
+            _pump->disable(1);
 
             // Wait for successful suction
             while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
@@ -117,7 +118,8 @@ public:
                 return;
             }
 
-            _pump->disable();
+            _pump->disable(0);
+            _pump->enable(1);
             while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
             }
             _server.setSucceeded(result);
