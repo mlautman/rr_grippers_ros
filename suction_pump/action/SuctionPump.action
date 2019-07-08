@@ -6,6 +6,7 @@ uint8 FULL_COVER=2 #down: 350 < P  down P > 340
 bool engage
 float32 timeout
 uint8 target_area
+string object_name #optional for real gripper
 ---
 #result definition
 int8 data
