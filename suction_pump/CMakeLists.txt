@@ -10,6 +10,7 @@ set(PKG_DEPS
     roscpp
     actionlib
     actionlib_msgs
+    hw_interface
 )
 
 find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})

@@ -9,48 +9,10 @@
 #include <libsoc_board.h>
 #include <libsoc_gpio.h>
 
+#include <hw_interface/gpio.hpp>
+
 namespace rapyuta
 {
-
-constexpr int GPIO_NAME_LENGTH = 20;
-
-/*
-    libsoc board conig class
-*/
-class BoardConfig
-{
-public:
-    BoardConfig();
-    ~BoardConfig();
-    board_config* get();
-
-private:
-    board_config* _bc;
-};
-
-/*
-    gpio interface class with libsoc
-*/
-class Gpio
-{
-public:
-    enum class Type
-    {
-        INPUT,
-        OUTPUT
-    };
-    explicit Gpio(const std::string& pin_str, const Type& type);
-    ~Gpio();
-    bool init(BoardConfig& config);
-    void enable();  // set pin high
-    void disable(); // set pin low
-    bool value();   // return pin level
-
-private:
-    gpio* _pin;
-    std::string _pin_str;
-    Type _type;
-};
 
 /*
     Pump interface which have trigger and status gpio class
