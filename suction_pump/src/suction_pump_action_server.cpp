@@ -5,12 +5,14 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 #include <actionlib/server/simple_action_server.h>
 #include <ros/ros.h>
 
+#include <hw_interface/gpio.hpp>
 #include <suction_pump/SuctionPumpAction.h>
 #include <suction_pump/suction_pump.hpp>
 
 namespace rapyuta
 {
 
+template <class HI>
 class SuctionPumpActionServer
 {
 public:
@@ -36,14 +38,14 @@ public:
             nh.getParam("status_gpio" + std::to_string(i), status);
             status_gpio.push_back(status);
         }
-        _pump = std::unique_ptr<Pump>(new Pump(trigger_gpio, trigger_num, status_gpio, status_num, normallyOn));
+        _pump = std::unique_ptr<Pump<HI>>(new Pump<HI>(trigger_gpio, trigger_num, status_gpio, status_num, normallyOn));
     }
 
     bool init()
     {
         if (_pump->init(_config)) {
             _server.start();
-            _pump->disable(); // set off
+            _pump->set(false); // set off
             ROS_INFO("%s: Started", _action_name.c_str());
             return true;
         }
@@ -62,7 +64,7 @@ public:
 
         // Engage
         if (goal->engage) {
-            _pump->enable();
+            _pump->set(true);
 
             // Wait for successful suction
             while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
@@ -75,7 +77,7 @@ public:
                 }
 
                 // Get current suction status
-                bool output[2] = {_pump->value(0), _pump->value(1)};
+                bool output[2] = {_pump->get(0), _pump->get(1)};
                 ROS_INFO("Suction pump status out1:%d, out2:%d", output[0], output[1]);
                 feedback.status = goal->NOTHING;
                 if (output[0]){
@@ -99,7 +101,7 @@ public:
             }
 
             // Action failed
-            _pump->disable();
+            _pump->set(false);
             ROS_ERROR("%s: Aborted", _action_name.c_str());
             _server.setAborted(result);
         }
@@ -107,17 +109,17 @@ public:
         // Disengage
         if (!goal->engage) {
 
-            bool output[2] = {_pump->value(0), _pump->value(1)};
+            bool output[2] = {_pump->get(0), _pump->get(1)};
             ROS_INFO("Suction pump status out1:%d, out2:%d", output[0], output[1]);
             result.data = goal->NOTHING;
 
             if(!output[0]){ //if already nothing, reurn success immediately
-                _pump->disable();
+                _pump->set(false);
                 _server.setSucceeded(result);
                 return;
             }
 
-            _pump->disable();
+            _pump->set(false);
             while ((ros::Time::now() - start_time) < ros::Duration(goal->timeout)) {
             }
             _server.setSucceeded(result);
@@ -125,7 +127,7 @@ public:
     }
 
 private:
-    std::unique_ptr<Pump> _pump;
+    std::unique_ptr<Pump<HI>> _pump;
     BoardConfig _config;
     actionlib::SimpleActionServer<suction_pump::SuctionPumpAction> _server;
     std::string _action_name;
@@ -137,7 +139,7 @@ int main(int argc, char** argv)
 {
     ros::init(argc, argv, "suction_pump_action_server");
     ros::NodeHandle nh;
-    rapyuta::SuctionPumpActionServer spas(nh, "suction_pump_action_server");
+    rapyuta::SuctionPumpActionServer<rapyuta::Gpio> spas(nh, "suction_pump_action_server");
     if (!spas.init()) {
         return 1;
     }
