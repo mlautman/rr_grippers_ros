@@ -35,7 +35,7 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}
-    src/lr_tb5000c.cpp
+    src/analog_sensor.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
