@@ -7,7 +7,7 @@
 #include <libsoc_board.h>
 #include <libsoc_gpio.h>
 
-#include "hw_interface.hpp"
+#include "rr_hw_interface/hw_interface.hpp"
 
 namespace rapyuta
 {

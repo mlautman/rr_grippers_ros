@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>suction_pump</name>
+  <name>rr_suction_pump</name>
   <version>0.0.1</version>
   <description>
    Suction pump interface. Supports schmaltz FXP pump.
@@ -15,7 +15,7 @@
   <depend>roscpp</depend>
   <depend>actionlib</depend>
   <depend>actionlib_msgs</depend>
-  <depend>hw_interface</depend>
+  <depend>rr_hw_interface</depend>
   <!-- <depend>libsoc</depend> -->
 
   <exec_depend>message_generation</exec_depend>

@@ -2,12 +2,12 @@
 Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 */
 
-#include <actionlib/server/simple_action_server.h>
 #include <ros/ros.h>
+#include <actionlib/server/simple_action_server.h>
 
-#include <hw_interface/gpio.hpp>
-#include <suction_pump/SuctionPumpAction.h>
-#include <suction_pump/suction_pump.hpp>
+#include <rr_hw_interface/gpio/libsoc_gpio.hpp>
+#include <rr_suction_pump/SuctionPumpAction.h>
+#include <rr_suction_pump/suction_pump.hpp>
 
 namespace rapyuta
 {
@@ -52,11 +52,11 @@ public:
         return false;
     }
 
-    void action_cb(const suction_pump::SuctionPumpGoalConstPtr& goal)
+    void action_cb(const rr_suction_pump::SuctionPumpGoalConstPtr& goal)
     {
         // Result and feedback
-        suction_pump::SuctionPumpResult result;
-        suction_pump::SuctionPumpFeedback feedback;
+        rr_suction_pump::SuctionPumpResult result;
+        rr_suction_pump::SuctionPumpFeedback feedback;
         feedback.status = goal->NOTHING;
 
         ros::Rate loop_rate(10);
@@ -129,7 +129,7 @@ public:
 private:
     std::unique_ptr<Pump<HI>> _pump;
     BoardConfig _config;
-    actionlib::SimpleActionServer<suction_pump::SuctionPumpAction> _server;
+    actionlib::SimpleActionServer<rr_suction_pump::SuctionPumpAction> _server;
     std::string _action_name;
 };
 

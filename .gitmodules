@@ -1,0 +1,9 @@
+[submodule "external/librevpi"]
+	path = external/librevpi
+	url = https://github.com/bhuvanchandra/librevpi.git
+[submodule "external/mcp23017_libsoc"]
+	path = external/mcp23017_libsoc
+	url = https://github.com/bhuvanchandra/mcp23017_libsoc.git
+[submodule "external/libsoc"]
+	path = external/libsoc
+	url = https://github.com/bhuvanchandra/libsoc.git

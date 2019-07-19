@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>hw_interface</name>
+  <name>rr_sensors</name>
   <version>0.0.1</version>
   <description>
    Suction pump interface. Supports schmaltz FXP pump.
   </description>
   <license>Commercial</license>
-  <maintainer email="gautham.manoharan@rapyuta-robotics.com">Gautham Manoharan</maintainer>
   <maintainer email="bhuvanchandra.dv@rapyuta-robotics.com">Bhuvanchandra</maintainer>
+  <maintainer email="tomin@rapyuta-robotics.com">Gautham Manoharan</maintainer>
   <maintainer email="yu.okamoto@rapyuta-robotics.com">Yu Okamoto</maintainer>
   
   <buildtool_depend>catkin</buildtool_depend>
   
   <depend>roscpp</depend>
-  <!-- <depend>libsoc</depend> -->
+  <depend>rr_hw_interface</depend>
 
   <exec_depend>message_generation</exec_depend>
 </package>

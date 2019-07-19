@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(suction_pump)
+project(rr_suction_pump)
 
 ##################
 ## Dependencies ##
@@ -10,7 +10,7 @@ set(PKG_DEPS
     roscpp
     actionlib
     actionlib_msgs
-    hw_interface
+    rr_hw_interface
 )
 
 find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})

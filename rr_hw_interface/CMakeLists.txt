@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(hw_interface)
+project(rr_hw_interface)
 
 ##################
 ## Dependencies ##
@@ -7,6 +7,7 @@ project(hw_interface)
 add_compile_options(-std=c++11)
 
 set(PKG_DEPS
+  roscpp
 )
 
 find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})
@@ -32,7 +33,7 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME} src/gpio.cpp)
+add_library(${PROJECT_NAME} src/gpio/libsoc_gpio.cpp)
 
 #############
 ## Install ##
@@ -42,7 +43,7 @@ install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
-install(DIRECTORY include/${PROJECT_NAME}
+install(DIRECTORY include
    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
 )
