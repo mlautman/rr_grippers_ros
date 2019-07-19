@@ -8,10 +8,13 @@ add_compile_options(-std=c++11)
 
 set(PKG_DEPS
     roscpp
+    std_msgs
     rr_hw_interface
 )
 
 find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})
+
+set(LSOC_LIBRARIES "-lsoc")
 
 ############
 ## catkin ##
@@ -26,39 +29,39 @@ catkin_package(
 ## Build ##
 ###########
 
-#include_directories(
-#    include
-#    ${catkin_INCLUDE_DIRS}
-#)
+include_directories(
+    include
+    ${catkin_INCLUDE_DIRS}
+)
 
-#add_executable(${PROJECT_NAME}
-#    src/ls_tb5000c.cpp
-#)
+add_executable(${PROJECT_NAME}
+    src/lr_tb5000c.cpp
+)
 
-#target_link_libraries(${PROJECT_NAME}
-#    ${catkin_LIBRARIES}
-#    ${LSOC_LIBRARIES}
-#)
+target_link_libraries(${PROJECT_NAME}
+    ${catkin_LIBRARIES}
+    ${LSOC_LIBRARIES}
+)
 
-#add_dependencies(${PROJECT_NAME}#${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 #############
 ## Install ##
 #############
 
-#install(TARGETS ${PROJECT_NAME}
-#    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-#)
+install(TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
-#install(DIRECTORY include/${PROJECT_NAME}
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
-#)
+install(DIRECTORY include/${PROJECT_NAME}
+   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+   FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+)
 
 install(FILES README.md
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-#install(DIRECTORY launch
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-#)
+install(DIRECTORY launch
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

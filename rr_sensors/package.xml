@@ -13,6 +13,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   
   <depend>roscpp</depend>
+  <depend>std_msgs</depend>
   <depend>rr_hw_interface</depend>
 
   <exec_depend>message_generation</exec_depend>
