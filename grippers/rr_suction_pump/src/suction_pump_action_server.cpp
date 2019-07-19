@@ -139,7 +139,7 @@ int main(int argc, char** argv)
 {
     ros::init(argc, argv, "suction_pump_action_server");
     ros::NodeHandle nh;
-    rapyuta::SuctionPumpActionServer<rapyuta::Gpio> spas(nh, "suction_pump_action_server");
+    rapyuta::SuctionPumpActionServer<rapyuta::LibsocGpio> spas(nh, "suction_pump_action_server");
     if (!spas.init()) {
         return 1;
     }

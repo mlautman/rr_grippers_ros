@@ -14,7 +14,7 @@ int main(int argc, char **argv)
   std::string pin_name;
   n.getParam("pin", pin_name);
   rapyuta::BoardConfig config;
-  rapyuta::Gpio analog(pin_name, rapyuta::Gpio::Type::INPUT);
+  rapyuta::LibsocGpio analog(pin_name, rapyuta::LibsocGpio::Type::INPUT);
   analog.init(config);
 
   ros::Rate loop_rate(50);

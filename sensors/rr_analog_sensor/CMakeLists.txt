@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(rr_sensors)
+project(rr_analog_sensor)
 
 ##################
 ## Dependencies ##

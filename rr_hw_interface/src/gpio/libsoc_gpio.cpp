@@ -30,11 +30,11 @@ board_config* BoardConfig::get()
     return _bc;
 }
 
-Gpio::Gpio(const std::string& pin_str, const Type& type)
+LibsocGpio::LibsocGpio(const std::string& pin_str, const Type& type)
         : _pin(NULL), HwInterface(pin_str, type){
 }
 
-Gpio::~Gpio()
+LibsocGpio::~LibsocGpio()
 {
     if (_pin) {
         if (libsoc_gpio_free(_pin) == EXIT_FAILURE) {
@@ -43,11 +43,11 @@ Gpio::~Gpio()
     }
 }
 
-bool Gpio::init(BoardConfig& config)
+bool LibsocGpio::init(BoardConfig& config)
 {
     _pin = libsoc_gpio_request(libsoc_board_gpio_id(config.get(), _pin_str.c_str()), LS_GPIO_SHARED);
     if (_pin == NULL) {
-        ROS_ERROR("Gpio request for pin %s failed", _pin_str.c_str());
+        ROS_ERROR("LibsocGpio request for pin %s failed", _pin_str.c_str());
         return false;
     }
 
@@ -64,7 +64,7 @@ bool Gpio::init(BoardConfig& config)
     return true;
 }
 
-void Gpio::set(bool input)
+void LibsocGpio::set(bool input)
 {
     if (_type == Type::OUTPUT) {
         if(input){
@@ -76,7 +76,7 @@ void Gpio::set(bool input)
 }
 
 
-bool Gpio::get()
+bool LibsocGpio::get()
 {
     if (_type == Type::INPUT) {
         return libsoc_gpio_get_level(_pin);

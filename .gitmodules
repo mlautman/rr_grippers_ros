@@ -7,3 +7,6 @@
 [submodule "external/libsoc"]
 	path = external/libsoc
 	url = https://github.com/bhuvanchandra/libsoc.git
+[submodule "sensors/vl53l0x_ros_driver"]
+	path = sensors/vl53l0x_ros_driver
+	url = https://github.com/bhuvanchandra/vl53l0x_ros_driver.git

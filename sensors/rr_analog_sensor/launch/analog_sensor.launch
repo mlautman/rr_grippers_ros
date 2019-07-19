@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-    <node pkg="rr_sensors" type="analog_sensor" name="lr_tb5000c0" output="screen"/>
+    <node pkg="rr_analog_sensor" type="analog_sensor" name="lr_tb5000c0" output="screen"/>
 	<rosparam file="$(find rr_sensors)/config/lr_tb5000c.yaml" />
 </launch>
