@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(rr_analog_sensor)
+project(rr_libsoc_gpio)
 
 ##################
 ## Dependencies ##
@@ -7,10 +7,8 @@ project(rr_analog_sensor)
 add_compile_options(-std=c++11)
 
 set(PKG_DEPS
-    roscpp
-    std_msgs
-    rr_hw_interface
-    rr_libsoc_gpio
+  roscpp
+  rr_hw_interface
 )
 
 find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})
@@ -23,6 +21,7 @@ set(LSOC_LIBRARIES "-lsoc")
 
 catkin_package(
     CATKIN_DEPENDS ${PKG_DEPS}
+    LIBRARIES ${PROJECT_NAME}
     INCLUDE_DIRS include
 )
 
@@ -35,34 +34,21 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME}
-    src/analog_sensor.cpp
-)
-
-target_link_libraries(${PROJECT_NAME}
-    ${catkin_LIBRARIES}
-    ${LSOC_LIBRARIES}
-)
-
-add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_library(${PROJECT_NAME} src/libsoc_gpio.cpp)
 
 #############
 ## Install ##
 #############
 
 install(TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
-install(DIRECTORY include/${PROJECT_NAME}
+install(DIRECTORY include
    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
 )
 
 install(FILES README.md
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
-
-install(DIRECTORY launch
-   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

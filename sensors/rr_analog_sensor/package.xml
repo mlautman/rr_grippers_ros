@@ -15,6 +15,7 @@
   <depend>roscpp</depend>
   <depend>std_msgs</depend>
   <depend>rr_hw_interface</depend>
+  <depend>rr_libsoc_gpio</depend>
 
   <exec_depend>message_generation</exec_depend>
 </package>

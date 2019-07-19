@@ -2,7 +2,7 @@
 #include <std_msgs/Float32.h>
 
 //todo change to analog
-#include <rr_hw_interface/gpio/libsoc_gpio.hpp>
+#include <rr_libsoc_gpio/libsoc_gpio.hpp>
 
 int main(int argc, char **argv)
 {

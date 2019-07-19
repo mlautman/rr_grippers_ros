@@ -5,7 +5,7 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 #include <ros/ros.h>
 #include <actionlib/server/simple_action_server.h>
 
-#include <rr_hw_interface/gpio/libsoc_gpio.hpp>
+#include <rr_libsoc_gpio/libsoc_gpio.hpp>
 #include <rr_suction_pump/SuctionPumpAction.h>
 #include <rr_suction_pump/suction_pump.hpp>
 

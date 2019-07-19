@@ -11,6 +11,7 @@ set(PKG_DEPS
     actionlib
     actionlib_msgs
     rr_hw_interface
+    rr_libsoc_gpio
 )
 
 find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})

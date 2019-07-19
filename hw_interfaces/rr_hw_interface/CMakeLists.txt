@@ -33,7 +33,7 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME} src/gpio/libsoc_gpio.cpp)
+add_library(${PROJECT_NAME} src/dummy.cpp)
 
 #############
 ## Install ##
