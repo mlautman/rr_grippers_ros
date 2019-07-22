@@ -1,8 +1,9 @@
 trigger_num: 1
 status_num: 2
 
-normally_on: true
+output_normally_on: false
+input_normally_on: true
 
-trigger_gpio0: "DIO1_PIN_11"
-status_gpio0: "DIO1_PIN_1"
-status_gpio1: "DIO1_PIN_2"
+trigger_gpio0: "O_1"
+status_gpio0: "I_1"
+status_gpio1: "I_2"

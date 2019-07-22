@@ -6,9 +6,6 @@
 
 #include <ros/ros.h>
 
-#include <libsoc_board.h>
-#include <libsoc_gpio.h>
-
 #include <rr_hw_interface/hw_interface.hpp>
 #include <rr_hw_interface/gpio/libsoc_gpio.hpp>
 
@@ -24,8 +21,8 @@ class Pump
 public:
     typedef std::unique_ptr<HI> HI_ptr;
     Pump(const std::vector<std::string> triggerPins, const int numOfTrigger, const std::vector<std::string> statusPins, const int numOfStatus,
-            const bool normallyOn)
-            : _normallyOn(normallyOn)
+            const bool outputNormallyOn, const bool inputNormallyOn)
+            : _outputNormallyOn(outputNormallyOn), _inputNormallyOn(inputNormallyOn)
     {
         for (int i = 0; i < numOfTrigger; i++) {
             _trigger.push_back(HI_ptr(new HI(triggerPins[i], HI::Type::OUTPUT)));
@@ -52,7 +49,7 @@ public:
 
     void set(bool input)
     {
-        if (_normallyOn) {
+        if (_outputNormallyOn) {
             for (HI_ptr& trigger : _trigger) {
                 trigger->set(!input);
             }
@@ -65,10 +62,10 @@ public:
 
     void set(bool input, unsigned int num)
     {
-        if (_normallyOn) {
-            _trigger[num]->set(false);
+        if (_outputNormallyOn) {
+            _trigger[num]->set(!input);
         } else {
-            _trigger[num]->set(true);
+            _trigger[num]->set(input);
         }
     };
 
@@ -84,13 +81,18 @@ public:
 
     bool get(unsigned int num)
     {
-        return _status[num]->get();
+        bool val = _status[num]->get();
+        if(_inputNormallyOn){
+            val = !val;
+        }
+        return val;
     };
 
 private:
     std::vector<HI_ptr> _trigger;
     std::vector<HI_ptr> _status;
-    bool _normallyOn;
+    bool _outputNormallyOn;
+    bool _inputNormallyOn;
 };
 
 } // namespace rapyuta

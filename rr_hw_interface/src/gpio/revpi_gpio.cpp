@@ -4,9 +4,6 @@
 
 #include <ros/ros.h>
 
-#include <libsoc_board.h>
-#include <libsoc_gpio.h>
-
 #include "rr_hw_interface/gpio/revpi_gpio.hpp"
 
 namespace rapyuta

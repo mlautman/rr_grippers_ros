@@ -4,7 +4,7 @@ project(rr_hw_interface)
 ##################
 ## Dependencies ##
 ##################
-add_compile_options(-std=c++11)
+#add_compile_options(-std=c++11)
 
 set(PKG_DEPS
   roscpp
@@ -13,7 +13,7 @@ set(PKG_DEPS
 find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})
 
 set(LSOC_LIBRARIES "-lsoc")
-set(REVPI_LIBRARIES "-lrevpi")
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 ############
 ## catkin ##
@@ -34,15 +34,21 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
+add_subdirectory(external/librevpi)
+
+set(CMAKE_CXX_FLAGS "-std=c++11 -fPIC ${CMAKE_CXX_FLAGS}")
+
 add_library(${PROJECT_NAME} 
   src/gpio/libsoc_gpio.cpp
   src/gpio/revpi_gpio.cpp
   )
 
+target_include_directories(${PROJECT_NAME} PUBLIC external/librevpi/include)
+
 target_link_libraries(${PROJECT_NAME}
     ${catkin_LIBRARIES}
     ${LSOC_LIBRARIES}
-    ${REVPI_LIBRARIES}
+    ${CATKIN_DEVEL_PREFIX}/lib/librevpi.a
 )
 
 #############

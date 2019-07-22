@@ -5,7 +5,8 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 #include <ros/ros.h>
 #include <actionlib/server/simple_action_server.h>
 
-#include <rr_hw_interface/gpio/libsoc_gpio.hpp>
+// #include <rr_hw_interface/gpio/libsoc_gpio.hpp>
+#include <rr_hw_interface/gpio/revpi_gpio.hpp>
 #include <rr_suction_pump/SuctionPumpAction.h>
 #include <rr_suction_pump/suction_pump.hpp>
 
@@ -22,14 +23,16 @@ public:
     {
         int trigger_num = 0;
         int status_num = 0;
-        bool normallyOn = false;
+        bool outputNormallyOn = false;
+        bool inputNormallyOn = false;
         std::vector<std::string> trigger_gpio;
         std::vector<std::string> status_gpio;
         std::string trigger, status;
 
         nh.getParam("trigger_num", trigger_num);
         nh.getParam("status_num", status_num);
-        nh.getParam("normally_on", normallyOn);
+        nh.getParam("output_normally_on", outputNormallyOn);
+        nh.getParam("input_normally_on", inputNormallyOn);
         for (int i = 0; i < trigger_num; i++) {
             nh.getParam("trigger_gpio" + std::to_string(i), trigger);
             trigger_gpio.push_back(trigger);
@@ -38,7 +41,7 @@ public:
             nh.getParam("status_gpio" + std::to_string(i), status);
             status_gpio.push_back(status);
         }
-        _pump = std::unique_ptr<Pump<HI, Config>>(new Pump<HI, Config>(trigger_gpio, trigger_num, status_gpio, status_num, normallyOn));
+        _pump = std::unique_ptr<Pump<HI, Config>>(new Pump<HI, Config>(trigger_gpio, trigger_num, status_gpio, status_num, outputNormallyOn, inputNormallyOn));
     }
 
     bool init()
@@ -139,7 +142,7 @@ int main(int argc, char** argv)
 {
     ros::init(argc, argv, "suction_pump_action_server");
     ros::NodeHandle nh;
-    rapyuta::SuctionPumpActionServer<rapyuta::LibsocGpio, rapyuta::LibsocBoardConfig> spas(nh, "suction_pump_action_server");
+    rapyuta::SuctionPumpActionServer<rapyuta::RevPiGpio, rapyuta::RevPiGpioBoardConfig> spas(nh, "suction_pump_action_server");
     if (!spas.init()) {
         return 1;
     }
