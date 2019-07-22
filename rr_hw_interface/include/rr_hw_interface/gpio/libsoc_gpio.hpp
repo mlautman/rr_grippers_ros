@@ -17,11 +17,11 @@ constexpr int GPIO_NAME_LENGTH = 20;
 /*
     libsoc board conig class
 */
-class BoardConfig
+class LibsocBoardConfig
 {
 public:
-    BoardConfig();
-    ~BoardConfig();
+    LibsocBoardConfig();
+    ~LibsocBoardConfig();
     board_config* get();
 
 private:
@@ -31,12 +31,12 @@ private:
 /*
     gpio interface class with libsoc
 */
-class LibsocGpio: public HwInterface<bool, BoardConfig>
+class LibsocGpio: public HwInterface<bool, LibsocBoardConfig>
 {
 public:
     LibsocGpio(const std::string& pin_str, const Type& type);
     ~LibsocGpio();
-    bool init(BoardConfig& config);
+    bool init(LibsocBoardConfig& config);
     void set(bool input);
     bool get(); 
 

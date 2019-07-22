@@ -18,7 +18,7 @@ namespace rapyuta
 /*
     Pump interface which have trigger and status gpio class
 */
-template <class HI>
+template <class HI, class Config>
 class Pump
 {
 public:
@@ -35,7 +35,7 @@ public:
         }
     };
 
-    bool init(BoardConfig& config)
+    bool init(Config& config)
     {
         for (HI_ptr& trigger : _trigger) {
             if (!trigger->init(config)) {

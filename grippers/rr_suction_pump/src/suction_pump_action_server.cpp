@@ -12,7 +12,7 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 namespace rapyuta
 {
 
-template <class HI>
+template <class HI, class Config>
 class SuctionPumpActionServer
 {
 public:
@@ -38,7 +38,7 @@ public:
             nh.getParam("status_gpio" + std::to_string(i), status);
             status_gpio.push_back(status);
         }
-        _pump = std::unique_ptr<Pump<HI>>(new Pump<HI>(trigger_gpio, trigger_num, status_gpio, status_num, normallyOn));
+        _pump = std::unique_ptr<Pump<HI, Config>>(new Pump<HI, Config>(trigger_gpio, trigger_num, status_gpio, status_num, normallyOn));
     }
 
     bool init()
@@ -127,8 +127,8 @@ public:
     }
 
 private:
-    std::unique_ptr<Pump<HI>> _pump;
-    BoardConfig _config;
+    std::unique_ptr<Pump<HI, Config>> _pump;
+    Config _config;
     actionlib::SimpleActionServer<rr_suction_pump::SuctionPumpAction> _server;
     std::string _action_name;
 };
@@ -139,7 +139,7 @@ int main(int argc, char** argv)
 {
     ros::init(argc, argv, "suction_pump_action_server");
     ros::NodeHandle nh;
-    rapyuta::SuctionPumpActionServer<rapyuta::LibsocGpio> spas(nh, "suction_pump_action_server");
+    rapyuta::SuctionPumpActionServer<rapyuta::LibsocGpio, rapyuta::LibsocBoardConfig> spas(nh, "suction_pump_action_server");
     if (!spas.init()) {
         return 1;
     }

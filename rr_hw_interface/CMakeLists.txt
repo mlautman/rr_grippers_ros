@@ -13,6 +13,7 @@ set(PKG_DEPS
 find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})
 
 set(LSOC_LIBRARIES "-lsoc")
+set(REVPI_LIBRARIES "-lrevpi")
 
 ############
 ## catkin ##
@@ -33,7 +34,16 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME} src/gpio/libsoc_gpio.cpp)
+add_library(${PROJECT_NAME} 
+  src/gpio/libsoc_gpio.cpp
+  src/gpio/revpi_gpio.cpp
+  )
+
+target_link_libraries(${PROJECT_NAME}
+    ${catkin_LIBRARIES}
+    ${LSOC_LIBRARIES}
+    ${REVPI_LIBRARIES}
+)
 
 #############
 ## Install ##

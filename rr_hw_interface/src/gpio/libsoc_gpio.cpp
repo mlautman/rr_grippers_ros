@@ -12,12 +12,12 @@
 namespace rapyuta
 {
 
-BoardConfig::BoardConfig()
+LibsocBoardConfig::LibsocBoardConfig()
 {
     _bc = libsoc_board_init();
 }
 
-BoardConfig::~BoardConfig()
+LibsocBoardConfig::~LibsocBoardConfig()
 {
     if (_bc) {
         free(_bc);
@@ -25,7 +25,7 @@ BoardConfig::~BoardConfig()
     }
 }
 
-board_config* BoardConfig::get()
+board_config* LibsocBoardConfig::get()
 {
     return _bc;
 }
@@ -43,7 +43,7 @@ LibsocGpio::~LibsocGpio()
     }
 }
 
-bool LibsocGpio::init(BoardConfig& config)
+bool LibsocGpio::init(LibsocBoardConfig& config)
 {
     _pin = libsoc_gpio_request(libsoc_board_gpio_id(config.get(), _pin_str.c_str()), LS_GPIO_SHARED);
     if (_pin == NULL) {

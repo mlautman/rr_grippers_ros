@@ -15,8 +15,6 @@ set(PKG_DEPS
 
 find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})
 
-set(LSOC_LIBRARIES "-lsoc")
-
 #####################
 ## Code generation ##
 #####################
@@ -42,7 +40,7 @@ catkin_package(
 ###########
 ## Build ##
 ###########
-
+#
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}
@@ -55,7 +53,6 @@ add_executable(${PROJECT_NAME}_action_server
 
 target_link_libraries(${PROJECT_NAME}_action_server
     ${catkin_LIBRARIES}
-    ${LSOC_LIBRARIES}
 )
 
 add_dependencies(${PROJECT_NAME}_action_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

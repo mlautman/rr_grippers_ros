@@ -13,7 +13,7 @@ int main(int argc, char **argv)
   //todo change to analog
   std::string pin_name;
   n.getParam("pin", pin_name);
-  rapyuta::BoardConfig config;
+  rapyuta::LibsocBoardConfig config;
   rapyuta::LibsocGpio analog(pin_name, rapyuta::LibsocGpio::Type::INPUT);
   analog.init(config);
 
