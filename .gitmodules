@@ -1,11 +1,11 @@
-[submodule "external/librevpi"]
-	path = external/librevpi
+[submodule "rr_hw_interface/external/librevpi"]
+	path = rr_hw_interface/external/librevpi
 	url = https://github.com/bhuvanchandra/librevpi.git
-[submodule "external/mcp23017_libsoc"]
-	path = external/mcp23017_libsoc
+[submodule "rr_hw_interface/external/mcp23017_libsoc"]
+	path = rr_hw_interface/external/mcp23017_libsoc
 	url = https://github.com/bhuvanchandra/mcp23017_libsoc.git
-[submodule "external/libsoc"]
-	path = external/libsoc
+[submodule "rr_hw_interface/external/libsoc"]
+	path = rr_hw_interface/external/libsoc
 	url = https://github.com/bhuvanchandra/libsoc.git
 [submodule "sensors/vl53l0x_ros_driver"]
 	path = sensors/vl53l0x_ros_driver
