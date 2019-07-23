@@ -1,20 +1,20 @@
-## Introduction
+# rr_hw_interface
+hw_interface class and classes wrapping external drivers with the interface.
+
 ---
-### fxp_pump
-A simple ros node to control [fxp_pump](https://www.schmalz.com/en/vacuum-technology-for-automation/vacuum-components/area-gripping-systems-and-end-effectors/vacuum-area-gripping-system-fxp-fmp/area-gripping-systems-fxp) using libsoc
+### Structure
+- `external`: external driver repositories.
+    - [`libsoc`](https://github.com/bhuvanchandra/libsoc.git): System on Chips (SoC) through generic Linux Kernel interfaces.
+    - [`librevpi`](https://github.com/bhuvanchandra/librevpi.git): control gpio from [revolutional pi](https://revolution.kunbus.com/)
+    - [`mcp23017_libsoc`](https://github.com/bhuvanchandra/mcp23017_libsoc.git): MCP23017 I2C-GPIO port expander
 
-### Prerequisites
-* `libsoc`
-
-Instructions for building and installing libsoc can be found at
-[http://github.com/bhuvanchandra/libsoc](http://github.com/bhuvanchandra/libsoc)
-
-### Installing libsoc
-
-To support Echo236FE IOs via libsoc, one need to install the echo236fe.conf config file:
-
+### Setup
+1. external pacage setup
 ```
-$ ./configure --enable-board=echo236fe
-$ make
-$ sudo make install
+cd rr_hw_interface/external
+./install_all.sh
 ```
+
+### Todo
+- Permission handling.Some procesure require root access.
+- Update `external/install_all.sh`
