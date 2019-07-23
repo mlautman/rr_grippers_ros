@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-    <node pkg="rr_analog_sensor" type="analog_sensor" name="lr_tb5000c0" output="screen"/>
-	<rosparam file="$(find rr_sensors)/config/lr_tb5000c.yaml" />
+    <node pkg="rr_analog_sensor" type="rr_analog_sensor" name="lr_tb5000c0" output="screen">
+    	<remap from='analog_sensor' to='lr_tb5000c0'/>
+		<rosparam file="$(find rr_analog_sensor)/config/lr_tb5000c0.yaml" />
+    </node>
+    <node pkg="rr_analog_sensor" type="rr_analog_sensor" name="lr_tb5000c1" output="screen">
+    	<remap from='analog_sensor' to='lr_tb5000c1'/>
+		<rosparam file="$(find rr_analog_sensor)/config/lr_tb5000c1.yaml" />
+    </node>
+    <node pkg="rr_analog_sensor" type="rr_analog_sensor" name="lr_tb5000c2" output="screen">
+    	<remap from='analog_sensor' to='lr_tb5000c2'/>
+		<rosparam file="$(find rr_analog_sensor)/config/lr_tb5000c2.yaml" />
+    </node>
+    <node pkg="rr_analog_sensor" type="rr_analog_sensor" name="lr_tb5000c3" output="screen">
+    	<remap from='analog_sensor' to='lr_tb5000c3'/>
+		<rosparam file="$(find rr_analog_sensor)/config/lr_tb5000c3.yaml" />
+    </node>
 </launch>

@@ -2,7 +2,7 @@
 #include <std_msgs/Float32.h>
 
 //todo change to analog
-// #include <rr_hw_interface/gpio/libsoc_gpio.hpp>
+#include <rr_hw_interface/aio/revpi_aio.hpp>
 
 float linear_trans(float a, float b, int input){
   return a*input+b;
@@ -20,7 +20,7 @@ float linear_trans(float a, float b, int input, float max, float min){
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "ao_sensor");
+  ros::init(argc, argv, "analog_sensor");
   ros::NodeHandle n;
   ros::Publisher sensor_pub = n.advertise<std_msgs::Float32>("analog_sensor", 10);
 
@@ -29,20 +29,17 @@ int main(int argc, char **argv)
   n.getParam("pin", pin_name);
   n.getParam("incline", incline);
   n.getParam("offset", offset);
-  n.getParam("max", pin_name);
-  n.getParam("min", pin_name);
-  // todo change to analog
-  // rapyuta::LibsocBoardConfig config;
-  // rapyuta::LibsocGpio analog(pin_name, rapyuta::LibsocGpio::Type::INPUT);
-  // analog.init(config);
+  n.getParam("max", max);
+  n.getParam("min", min);
+  rapyuta::RevPiAioBoardConfig config;
+  rapyuta::RevPiAio analog(pin_name, rapyuta::RevPiAio::Type::INPUT);
+  analog.init(config);
 
   ros::Rate loop_rate(50);
+  std_msgs::Float32 msg;
   while (ros::ok())
   {
-    std_msgs::Float32 msg;
-    //todo proper conversion from analog to distance[m]
-    float data; 
-    msg.data = linear_trans(incline, offset, max, min, data);
+    msg.data = linear_trans(incline, offset, analog.get(), max, min);
     sensor_pub.publish(msg);
     ros::spinOnce();
     loop_rate.sleep();

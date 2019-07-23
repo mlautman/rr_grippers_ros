@@ -1,0 +1,5 @@
+pin: "InputValue_2"
+incline: 0.001
+offset: 0.0
+max: 10.0
+min: 0.0
