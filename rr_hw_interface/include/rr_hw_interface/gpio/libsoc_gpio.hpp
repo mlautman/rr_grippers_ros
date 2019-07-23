@@ -31,14 +31,14 @@ private:
 /*
     gpio interface class with libsoc
 */
-class LibsocGpio: public HwInterface<bool, LibsocBoardConfig>
+class LibsocGpio : public HwInterface<bool, LibsocBoardConfig>
 {
 public:
     LibsocGpio(const std::string& pin_str, const Type& type);
     ~LibsocGpio();
     bool init(LibsocBoardConfig& config);
     void set(bool input);
-    bool get(); 
+    bool get();
 
 private:
     gpio* _pin;

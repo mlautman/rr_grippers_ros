@@ -2,8 +2,8 @@
 Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 */
 
-#include <ros/ros.h>
 #include <actionlib/server/simple_action_server.h>
+#include <ros/ros.h>
 
 // #include <rr_hw_interface/gpio/libsoc_gpio.hpp>
 #include <rr_hw_interface/gpio/revpi_gpio.hpp>
@@ -83,10 +83,10 @@ public:
                 bool output[2] = {_pump->get(0), _pump->get(1)};
                 ROS_INFO("Suction pump status out1:%d, out2:%d", output[0], output[1]);
                 feedback.status = goal->NOTHING;
-                if (output[0]){
+                if (output[0]) {
                     feedback.status = goal->HALF_COVER;
                 }
-                if (output[0] && output[1]){
+                if (output[0] && output[1]) {
                     feedback.status = goal->FULL_COVER;
                 }
 
@@ -95,8 +95,7 @@ public:
                 result.data = feedback.status;
 
                 // If successful, set action to succeeded
-                if (result.data >= goal->target_area)
-                {
+                if (result.data >= goal->target_area) {
                     _server.setSucceeded(result);
                     return;
                 }
@@ -116,7 +115,7 @@ public:
             ROS_INFO("Suction pump status out1:%d, out2:%d", output[0], output[1]);
             result.data = goal->NOTHING;
 
-            if(!output[0]){ //if already nothing, reurn success immediately
+            if (!output[0]) { // if already nothing, reurn success immediately
                 _pump->set(false);
                 _server.setSucceeded(result);
                 return;

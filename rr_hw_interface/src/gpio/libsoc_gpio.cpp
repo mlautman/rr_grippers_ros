@@ -31,7 +31,9 @@ board_config* LibsocBoardConfig::get()
 }
 
 LibsocGpio::LibsocGpio(const std::string& pin_str, const Type& type)
-        : _pin(NULL), HwInterface(pin_str, type){
+        : _pin(NULL)
+        , HwInterface(pin_str, type)
+{
 }
 
 LibsocGpio::~LibsocGpio()
@@ -67,14 +69,13 @@ bool LibsocGpio::init(LibsocBoardConfig& config)
 void LibsocGpio::set(bool input)
 {
     if (_type == Type::OUTPUT) {
-        if(input){
+        if (input) {
             libsoc_gpio_set_level(_pin, HIGH);
-        }else{
+        } else {
             libsoc_gpio_set_level(_pin, LOW);
         }
     }
 }
-
 
 bool LibsocGpio::get()
 {

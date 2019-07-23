@@ -6,8 +6,8 @@
 
 #include <ros/ros.h>
 
-#include <rr_hw_interface/hw_interface.hpp>
 #include <rr_hw_interface/gpio/libsoc_gpio.hpp>
+#include <rr_hw_interface/hw_interface.hpp>
 
 namespace rapyuta
 {
@@ -22,7 +22,8 @@ public:
     typedef std::unique_ptr<HI> HI_ptr;
     Pump(const std::vector<std::string> triggerPins, const int numOfTrigger, const std::vector<std::string> statusPins, const int numOfStatus,
             const bool outputNormallyOn, const bool inputNormallyOn)
-            : _outputNormallyOn(outputNormallyOn), _inputNormallyOn(inputNormallyOn)
+            : _outputNormallyOn(outputNormallyOn)
+            , _inputNormallyOn(inputNormallyOn)
     {
         for (int i = 0; i < numOfTrigger; i++) {
             _trigger.push_back(HI_ptr(new HI(triggerPins[i], HI::Type::OUTPUT)));
@@ -82,7 +83,7 @@ public:
     bool get(unsigned int num)
     {
         bool val = _status[num]->get();
-        if(_inputNormallyOn){
+        if (_inputNormallyOn) {
             val = !val;
         }
         return val;

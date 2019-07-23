@@ -10,7 +10,8 @@ namespace rapyuta
 {
 
 RevPiGpio::RevPiGpio(const std::string& pin_str, const Type& type)
-        : HwInterface(pin_str, type){
+        : HwInterface(pin_str, type)
+{
 }
 
 RevPiGpio::~RevPiGpio()
@@ -21,7 +22,7 @@ bool RevPiGpio::init(RevPiGpioBoardConfig& config)
 {
     sprintf(_pin.pin_name, "%s", _pin_str.c_str());
     int ret = revpi_init(&_pin);
-    if (ret<0) {
+    if (ret < 0) {
         ROS_ERROR("RevPiGpio request for pin %s failed", _pin_str.c_str());
         return false;
     }
@@ -35,7 +36,6 @@ void RevPiGpio::set(bool input)
         revpi_set_do_level(&_pin, input);
     }
 }
-
 
 bool RevPiGpio::get()
 {
