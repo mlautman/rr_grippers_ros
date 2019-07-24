@@ -22,7 +22,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 catkin_package(
     CATKIN_DEPENDS ${PKG_DEPS}
     LIBRARIES ${PROJECT_NAME}
-    INCLUDE_DIRS include
+    INCLUDE_DIRS include external/librevpi/include
 )
 
 ###########
@@ -31,6 +31,7 @@ catkin_package(
 
 include_directories(
     include
+    external/librevpi/include
     ${catkin_INCLUDE_DIRS}
 )
 
@@ -44,12 +45,15 @@ add_library(${PROJECT_NAME}
   src/aio/revpi_aio.cpp
   )
 
-target_include_directories(${PROJECT_NAME} PUBLIC external/librevpi/include)
+target_include_directories(${PROJECT_NAME} PUBLIC
+  include 
+  external/librevpi/include
+)
 
 target_link_libraries(${PROJECT_NAME}
     ${catkin_LIBRARIES}
     ${LSOC_LIBRARIES}
-    ${CATKIN_DEVEL_PREFIX}/lib/librevpi.a
+    ${CATKIN_DEVEL_PREFIX}/lib/liblibrevpi.a
 )
 
 #############
@@ -60,7 +64,7 @@ install(TARGETS ${PROJECT_NAME}
     LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 
-install(DIRECTORY include
+install(DIRECTORY include/${PROJECT_NAME} 
    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
    FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
 )
