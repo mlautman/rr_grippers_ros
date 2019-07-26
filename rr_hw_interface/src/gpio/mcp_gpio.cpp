@@ -4,7 +4,7 @@
 
 #include <ros/ros.h>
 
-#include "rr_hw_interface/gpio/mcp23017_gpio.hpp"
+#include <rr_hw_interface/gpio/mcp23017_gpio.hpp>
 
 namespace rapyuta
 {
@@ -53,4 +53,5 @@ bool McpGpio::get()
     }
     return true;
 }
+
 } // namespace rapyuta
