@@ -26,6 +26,15 @@ int main(int argc, char** argv)
     n.getParam("sensor_num", sensorNum);
     n.getParam("sensor_freq", sensorFreq);
 
+    std::cout << incline_default << " " 
+              << offset_default << " " 
+              << max_default << " " 
+              << min_default << " " 
+              << sensorNum << " "
+              << sensorFreq << " "
+              << std::endl;
+
+
     std::vector<rapyuta::AnalogSensor<rapyuta::RevPiAio, rapyuta::RevPiAioBoardConfig>> pins;
     for (int i = 0; i < sensorNum; i++) {
 
@@ -37,7 +46,12 @@ int main(int argc, char** argv)
         ros::param::param<float>("~" + pin_num + "/max", max, max_default);
         ros::param::param<float>("~" + pin_num + "/min", min, min_default);
         pins.push_back(rapyuta::AnalogSensor<rapyuta::RevPiAio, rapyuta::RevPiAioBoardConfig>(incline, offset, max, min, pin_name, n, topic_name));
-
+        std::cout << pin_name << " " 
+                  << topic_name << " " 
+                  << incline << " " 
+                  << max << " " 
+                  << min << " " 
+                  << std::endl;
         rapyuta::RevPiAioBoardConfig config;
         pins.back().init(config);
     }

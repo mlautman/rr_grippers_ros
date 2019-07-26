@@ -3,9 +3,9 @@ sensor_freq: 50
 
 #default
 # incline * input + offset
-incline: 0.001
+incline: 0.0005
 offset: 0.0
-max: 10.0
+max: 5.0
 min: 0.0
 
 pin0:

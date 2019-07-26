@@ -44,7 +44,7 @@ public:
 
     bool init(Config& config) { return _analog.init(config); };
 
-    float get() { return inear_trans(_incline, _offset, _analog.get(), _max, _min); };
+    float get() { return linear_trans(_incline, _offset, _analog.get(), _max, _min); };
 
     float pub()
     {
