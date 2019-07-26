@@ -1,0 +1,29 @@
+sensor_num: 4
+sensor_freq: 50
+
+#default
+# incline * input + offset
+incline: 0.0005
+offset: 0.0
+max: 5.0
+min: 0.0
+
+pin0:
+  name: "InputValue_1"
+  topic_name: "sensor1"
+  incline: 0.001
+  offset: 0.0
+  max: 10.0
+  min: 0.0
+
+pin1:
+  name: "InputValue_2"
+  topic_name: "sensor2"
+
+pin2:
+  name: "InputValue_3"
+  topic_name: "sensor3"
+
+pin3:
+  name: "InputValue_4"
+  topic_name: "sensor4"

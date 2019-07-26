@@ -33,7 +33,7 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}
-    src/analog_sensor.cpp
+    src/analog_sensor_node.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
