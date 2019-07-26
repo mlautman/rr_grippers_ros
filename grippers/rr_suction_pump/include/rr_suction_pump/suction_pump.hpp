@@ -26,10 +26,10 @@ public:
             , _inputNormallyOn(inputNormallyOn)
     {
         for (int i = 0; i < numOfTrigger; i++) {
-            _trigger.push_back(HI_ptr(new HI(triggerPins[i], HI::Type::OUTPUT)));
+            _trigger.push_back(HI_ptr(new HI(triggerPins[i], HI::Type::RR_HW_INTERFACE_OUTPUT)));
         }
         for (int i = 0; i < numOfStatus; i++) {
-            _status.push_back(HI_ptr(new HI(statusPins[i], HI::Type::INPUT)));
+            _status.push_back(HI_ptr(new HI(statusPins[i], HI::Type::RR_HW_INTERFACE_INPUT)));
         }
     };
 

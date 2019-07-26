@@ -20,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS ${PKG_DEPS})
 
 catkin_package(
     CATKIN_DEPENDS ${PKG_DEPS}
-    INCLUDE_DIRS include
+    #INCLUDE_DIRS include
 )
 
 ###########
@@ -28,7 +28,7 @@ catkin_package(
 ###########
 
 include_directories(
-    include
+   # include
     ${catkin_INCLUDE_DIRS}
 )
 
@@ -50,10 +50,10 @@ install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(DIRECTORY include/${PROJECT_NAME}
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-   FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
-)
+#install(DIRECTORY include/${PROJECT_NAME}
+#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+#)
 
 install(FILES README.md
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}

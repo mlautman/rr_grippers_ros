@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     n.getParam("max", max);
     n.getParam("min", min);
     rapyuta::RevPiAioBoardConfig config;
-    rapyuta::RevPiAio analog(pin_name, rapyuta::RevPiAio::Type::INPUT);
+    rapyuta::RevPiAio analog(pin_name, rapyuta::RevPiAio::Type::RR_HW_INTERFACE_INPUT);
     analog.init(config);
 
     ros::Rate loop_rate(50);

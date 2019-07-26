@@ -5,6 +5,3 @@ autoreconf -i
 make
 sudo make install
 cd ../
-
-
-# install mcp
