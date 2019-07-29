@@ -46,7 +46,11 @@ public:
     ~McpGpio();
     bool init(McpGpioBoardConfig& config);
     void set(bool input);
+    //void set(int pin,bool input);
+    //bool get(int pin);
     bool get();
+    //void pinmode_input(int pin,uint8_t direction);
+    void pinmode(uint8_t direction);
 
 private:
     uint8_t _pin;
