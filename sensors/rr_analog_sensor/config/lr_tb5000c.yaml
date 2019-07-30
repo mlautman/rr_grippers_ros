@@ -6,16 +6,15 @@ sensor_freq: 50
 incline: 0.0005
 offset: 0.0
 max: 5.0
-min: 0.0
+min: 0.05
 
 pin0:
   name: "InputValue_1"
   topic_name: "sensor1"
-  incline: 0.001
+  incline: 0.0005
   offset: 0.0
-  max: 10.0
-  min: 0.0
-
+  max: 5.0
+  
 pin1:
   name: "InputValue_2"
   topic_name: "sensor2"
