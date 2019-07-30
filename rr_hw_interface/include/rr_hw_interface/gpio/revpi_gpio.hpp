@@ -7,7 +7,7 @@ namespace rapyuta
 {
 
 /*
-    libsoc board conig class
+    libsoc board config class
 */
 class RevPiGpioBoardConfig
 {

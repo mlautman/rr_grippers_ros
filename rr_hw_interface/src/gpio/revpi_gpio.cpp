@@ -32,14 +32,14 @@ bool RevPiGpio::init(RevPiGpioBoardConfig& config)
 
 void RevPiGpio::set(bool input)
 {
-    if (_type == Type::OUTPUT) {
+    if (_type == Type::RR_HW_INTERFACE_OUTPUT) {
         revpi_set_do_level(&_pin, input);
     }
 }
 
 bool RevPiGpio::get()
 {
-    if (_type == Type::INPUT) {
+    if (_type == Type::RR_HW_INTERFACE_INPUT) {
         return (revpi_get_di_level(&_pin));
     } else {
         ROS_ERROR("Cannot read value of output type gpio %s.", _pin_str.c_str());

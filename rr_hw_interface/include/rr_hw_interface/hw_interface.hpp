@@ -16,8 +16,8 @@ class HwInterface
 public:
     enum class Type
     {
-        INPUT,
-        OUTPUT,
+        RR_HW_INTERFACE_INPUT,
+        RR_HW_INTERFACE_OUTPUT,
     };
     HwInterface(){};
     HwInterface(const std::string& pin_str, const Type& type)

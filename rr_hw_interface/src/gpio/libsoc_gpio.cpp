@@ -54,7 +54,7 @@ bool LibsocGpio::init(LibsocBoardConfig& config)
     }
 
     int ret;
-    if (_type == Type::OUTPUT) {
+    if (_type == Type::RR_HW_INTERFACE_OUTPUT) {
         ret = libsoc_gpio_set_direction(_pin, OUTPUT);
     } else {
         ret = libsoc_gpio_set_direction(_pin, INPUT);
@@ -68,7 +68,7 @@ bool LibsocGpio::init(LibsocBoardConfig& config)
 
 void LibsocGpio::set(bool input)
 {
-    if (_type == Type::OUTPUT) {
+    if (_type == Type::RR_HW_INTERFACE_OUTPUT) {
         if (input) {
             libsoc_gpio_set_level(_pin, HIGH);
         } else {
@@ -79,7 +79,7 @@ void LibsocGpio::set(bool input)
 
 bool LibsocGpio::get()
 {
-    if (_type == Type::INPUT) {
+    if (_type == Type::RR_HW_INTERFACE_INPUT) {
         return libsoc_gpio_get_level(_pin);
     } else {
         ROS_ERROR("Cannot read value of output type gpio %s.", _pin_str.c_str());

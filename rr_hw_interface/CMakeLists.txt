@@ -22,7 +22,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 catkin_package(
     CATKIN_DEPENDS ${PKG_DEPS}
     LIBRARIES ${PROJECT_NAME}
-    INCLUDE_DIRS include external/librevpi/include
+    INCLUDE_DIRS include external/librevpi/include external/mcp23017_libsoc
 )
 
 ###########
@@ -32,28 +32,33 @@ catkin_package(
 include_directories(
     include
     external/librevpi/include
+    external/mcp23017_libsoc
     ${catkin_INCLUDE_DIRS}
 )
 
 add_subdirectory(external/librevpi)
+add_subdirectory(external/mcp23017_libsoc)
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -fPIC ${CMAKE_CXX_FLAGS}")
 
 add_library(${PROJECT_NAME} 
   src/gpio/libsoc_gpio.cpp
   src/gpio/revpi_gpio.cpp
+  src/gpio/mcp_gpio.cpp
   src/aio/revpi_aio.cpp
   )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   include 
   external/librevpi/include
+  external/mcp23017_libsoc
 )
 
 target_link_libraries(${PROJECT_NAME}
     ${catkin_LIBRARIES}
     ${LSOC_LIBRARIES}
     ${CATKIN_DEVEL_PREFIX}/lib/liblibrevpi.a
+    ${CATKIN_DEVEL_PREFIX}/lib/libmcp23017.a
 )
 
 #############

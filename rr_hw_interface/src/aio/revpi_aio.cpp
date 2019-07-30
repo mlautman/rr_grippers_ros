@@ -32,14 +32,14 @@ bool RevPiAio::init(RevPiAioBoardConfig& config)
 
 void RevPiAio::set(int input)
 {
-    if (_type == Type::OUTPUT) {
+    if (_type == Type::RR_HW_INTERFACE_OUTPUT) {
         // revpi_set_ao_value(&_pin, input);
     }
 }
 
 int RevPiAio::get()
 {
-    if (_type == Type::INPUT) {
+    if (_type == Type::RR_HW_INTERFACE_INPUT) {
         return (revpi_get_ai_value(&_pin));
     } else {
         ROS_ERROR("Cannot read value of output type Aio %s.", _pin_str.c_str());

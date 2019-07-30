@@ -37,7 +37,7 @@ public:
             , _max(max)
             , _min(min)
             , _name(name)
-            , _analog(_name, HI::Type::INPUT)
+            , _analog(_name, HI::Type::RR_HW_INTERFACE_INPUT)
     {
         _pub = n.advertise<std_msgs::Float32>(topic_name, 10);
     };
