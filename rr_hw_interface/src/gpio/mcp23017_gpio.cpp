@@ -12,33 +12,52 @@
 namespace rapyuta
 {
 
+McpGpioBoardConfig::McpGpioBoardConfig(uint8_t i2c_bus_instance, uint8_t mcp_address){
+    _i2c_mcp23017 = mcp23xx_init(i2c_bus_instance, mcp_address);    
+};
+
+McpGpioBoardConfig::~McpGpioBoardConfig(){
+    if(_i2c_mcp23017){
+        libsoc_i2c_free(_i2c_mcp23017);
+    }
+};
+
+i2c* McpGpioBoardConfig::get_i2c()
+{
+    return _i2c_mcp23017;
+};    
+
+
 McpGpio::McpGpio(const std::string& pin_str, const Type& type)
-        : HwInterface(pin_str, type)
+        :_pin(std::stoi(pin_str)), HwInterface(pin_str, type)
 {
 }
 
 McpGpio::~McpGpio()
 {
-    libsoc_i2c_free(_i2c_mcp23017);
 }
 
 bool McpGpio::init(McpGpioBoardConfig& config)
 {
-    _i2c_mcp23017 = mcp23xx_init(config.return_i2c_bus_instance(), config.return_mcp_address());
+    _i2c_mcp23017 = config.get_i2c();
     if (_i2c_mcp23017 == NULL) {
         ROS_ERROR("MCP23017 init failed ");
         return false;
     }
+    if (_type == Type::RR_HW_INTERFACE_INPUT){
+        mcp_pinMode(_i2c_mcp23017, _pin, OUTPUT);//see from mcp side
+    }else{
+        mcp_pinMode(_i2c_mcp23017, _pin, INPUT);        
+    }
     ROS_INFO("MCP23017 init passed ");
+
     return true;
 }
 
 void McpGpio::set(bool input)
 {
-    _pin =std::stoi( _pin_str );
-    ROS_INFO("'%d' is the converted pin number in mcpgpio set",_pin);
     if (_i2c_mcp23017 != NULL) {
-        if (_type == Type::RR_HW_INTERFACE_OUTPUT) {
+        if (_type == Type::RR_HW_INTERFACE_INPUT) {
             if (input) {
                 mcp_digitalWrite(_i2c_mcp23017, _pin, HIGH);
             } else {
@@ -50,15 +69,8 @@ void McpGpio::set(bool input)
     }
 }
 
-void McpGpio::pinmode(uint8_t direction)
-{
-    _pin =std::stoi( _pin_str );
-    mcp_pinMode(_i2c_mcp23017, _pin, (direction == INPUT));
-}
-
 bool McpGpio::get()
 {
-    _pin =std::stoi( _pin_str );
     if (_i2c_mcp23017 != NULL) {
         if (_type == Type::RR_HW_INTERFACE_INPUT) {
             return mcp_digitalRead(_i2c_mcp23017, _pin);

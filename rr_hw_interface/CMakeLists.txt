@@ -44,7 +44,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -fPIC ${CMAKE_CXX_FLAGS}")
 add_library(${PROJECT_NAME} 
   src/gpio/libsoc_gpio.cpp
   src/gpio/revpi_gpio.cpp
-  src/gpio/mcp_gpio.cpp
+  src/gpio/mcp23017_gpio.cpp
   src/aio/revpi_aio.cpp
   )
 

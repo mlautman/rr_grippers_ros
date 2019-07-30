@@ -12,28 +12,12 @@ namespace rapyuta
 class McpGpioBoardConfig
 {
 public:
-    McpGpioBoardConfig(){};
-    ~McpGpioBoardConfig(){};
-    void set_mcp_address(int mcp_address)
-    {
-        _mcp_address = mcp_address;
-    };
-    void set_i2c_bus_instance(int i2c_bus_instance)
-    {
-        _i2c_bus_instance = i2c_bus_instance;
-    };
-    int return_mcp_address()
-    {
-        return _mcp_address;
-    };
-    int return_i2c_bus_instance()
-    {
-        return _i2c_bus_instance;
-    };
+    McpGpioBoardConfig(uint8_t i2c_bus_instance, uint8_t mcp_address);
+    ~McpGpioBoardConfig();
+    i2c *get_i2c();
 
 private:
-    int _mcp_address;
-    int _i2c_bus_instance;
+    i2c *_i2c_mcp23017;
 };
 
 /*
@@ -46,11 +30,7 @@ public:
     ~McpGpio();
     bool init(McpGpioBoardConfig& config);
     void set(bool input);
-    //void set(int pin,bool input);
-    //bool get(int pin);
     bool get();
-    //void pinmode_input(int pin,uint8_t direction);
-    void pinmode(uint8_t direction);
 
 private:
     uint8_t _pin;
