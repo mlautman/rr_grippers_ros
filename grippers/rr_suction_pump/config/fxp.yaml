@@ -1,0 +1,9 @@
+trigger_num: 1
+status_num: 2
+
+output_normally_on: false
+input_normally_on: true
+
+trigger_gpio0: "O_1"
+status_gpio0: "I_1"
+status_gpio1: "I_2"

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rr_analog_sensor</name>
+  <version>0.0.1</version>
+  <description>
+   Analog sensor interface
+  </description>
+  <license>Commercial</license>
+  <maintainer email="bhuvanchandra.dv@rapyuta-robotics.com">Bhuvanchandra</maintainer>
+  <maintainer email="tomin@rapyuta-robotics.com">Tomin Joseph</maintainer>
+  <maintainer email="yu.okamoto@rapyuta-robotics.com">Yu Okamoto</maintainer>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>rr_hw_interface</depend>
+
+  <exec_depend>message_generation</exec_depend>
+</package>
