@@ -25,9 +25,16 @@ catkin_package(
     INCLUDE_DIRS include external/librevpi/include external/mcp23017_libsoc
 )
 
+####################
+## Subdirectories ##
+####################
+add_subdirectory(external/librevpi)
+add_subdirectory(external/mcp23017_libsoc)
+
 ###########
 ## Build ##
 ###########
+set(CMAKE_CXX_FLAGS "-std=c++11 -fPIC ${CMAKE_CXX_FLAGS}")
 
 include_directories(
     include
@@ -36,17 +43,14 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-add_subdirectory(external/librevpi)
-add_subdirectory(external/mcp23017_libsoc)
-
-set(CMAKE_CXX_FLAGS "-std=c++11 -fPIC ${CMAKE_CXX_FLAGS}")
-
 add_library(${PROJECT_NAME} 
   src/gpio/libsoc_gpio.cpp
   src/gpio/revpi_gpio.cpp
   src/gpio/mcp23017_gpio.cpp
   src/aio/revpi_aio.cpp
   )
+
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   include 
