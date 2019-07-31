@@ -14,10 +14,10 @@ class McpGpioBoardConfig
 public:
     McpGpioBoardConfig(uint8_t i2c_bus_instance, uint8_t mcp_address);
     ~McpGpioBoardConfig();
-    i2c *get_i2c();
+    i2c* get_i2c();
 
 private:
-    i2c *_i2c_mcp23017;
+    i2c* _i2c_mcp23017;
 };
 
 /*
