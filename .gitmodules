@@ -1,13 +1,13 @@
 
 [submodule "rr_hw_interface/external/librevpi"]
 	path = rr_hw_interface/external/librevpi
-	url = https://github.com/rapyuta-robotics/librevpi.git
+	url = git@github.com:rapyuta-robotics/librevpi.git
 [submodule "rr_hw_interface/external/libsoc"]
 	path = rr_hw_interface/external/libsoc
-	url = https://github.com/rapyuta-robotics/libsoc.git
+	url = git@github.com:rapyuta-robotics/libsoc.git
 [submodule "rr_hw_interface/external/mcp23017_libsoc"]
 	path = rr_hw_interface/external/mcp23017_libsoc
-	url = https://github.com/rapyuta-robotics/mcp23017_libsoc.git
+	url = git@github.com:rapyuta-robotics/mcp23017_libsoc.git
 [submodule "sensors/vl53l0x_ros_driver"]
 	path = sensors/vl53l0x_ros_driver
-	url = https://github.com/rapyuta-robotics/vl53l0x_ros_driver.git
+	url = git@github.com:rapyuta-robotics/vl53l0x_ros_driver.git
