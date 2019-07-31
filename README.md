@@ -20,10 +20,8 @@ gitsubmodules under rr_hw_interface/external
 1. git clone and submodule setting
 ```
 cd <path to catkin_ws>/src
-git clone git@github.com:rapyuta-robotics/rr_grippers_ros.git
+git clone --recursive git@github.com:rapyuta-robotics/rr_grippers_ros.git
 cd rr_grippeprs_ros
-git submodule init
-git submodule update
 ```
 2. external pacage setup
 ```

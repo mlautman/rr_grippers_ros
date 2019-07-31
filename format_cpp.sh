@@ -7,5 +7,6 @@ find . \
     -not \( -path "*/devel/*" -prune \) \
     -not \( -path "*/build/*" -prune \) \
     -not \( -path "*/install/*" -prune \) \
+    -not \( -path "*/external/*" -prune \) \
     \( -name *.h -o -name *.hpp -o -name *.c -o -name *.cc -o -name *.cpp \) \
     | xargs clang-format -style=file -i
