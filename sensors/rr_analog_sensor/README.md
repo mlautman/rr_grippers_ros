@@ -4,5 +4,5 @@ Generic ROS driver for analog input. This class uses interface in the `rr_hw_int
 ---
 ### Run
 ```
-roslaunch rr_analog_sensor rr_analog_sensor.launch
+roslaunch rr_analog_sensor analog_sensor.launch
 ```

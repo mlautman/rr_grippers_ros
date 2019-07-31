@@ -47,7 +47,6 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}_action_server
-    #src/suction_pump.cpp
     src/suction_pump_action_server.cpp
 )
 

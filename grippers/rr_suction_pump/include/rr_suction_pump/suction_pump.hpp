@@ -6,7 +6,6 @@
 
 #include <ros/ros.h>
 
-#include <rr_hw_interface/gpio/libsoc_gpio.hpp>
 #include <rr_hw_interface/hw_interface.hpp>
 
 namespace rapyuta
