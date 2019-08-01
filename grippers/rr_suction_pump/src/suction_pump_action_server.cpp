@@ -29,10 +29,10 @@ public:
         std::vector<std::string> status_gpio;
         std::string trigger, status;
 
-        nh.getParam("trigger_num", trigger_num);
-        nh.getParam("status_num", status_num);
-        nh.getParam("output_normally_on", outputNormallyOn);
-        nh.getParam("input_normally_on", inputNormallyOn);
+        nh.getParam("/trigger_num", trigger_num);
+        nh.getParam("/status_num", status_num);
+        nh.getParam("/output_normally_on", outputNormallyOn);
+        nh.getParam("/input_normally_on", inputNormallyOn);
         for (int i = 0; i < trigger_num; i++) {
             nh.getParam("trigger_gpio" + std::to_string(i), trigger);
             trigger_gpio.push_back(trigger);
@@ -140,7 +140,7 @@ private:
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "suction_pump_action_server");
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~");
     rapyuta::SuctionPumpActionServer<rapyuta::RevPiGpio, rapyuta::RevPiGpioBoardConfig> spas(nh, "suction_pump_action_server");
     if (!spas.init()) {
         return 1;
