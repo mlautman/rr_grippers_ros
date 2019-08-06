@@ -1,0 +1,31 @@
+#default params
+trigger_num: 1
+status_num: 2
+
+output_normally_on: false
+input_normally_on: false
+
+#pump specific params
+suction_pump1:
+
+  trigger_gpio0: "O_1"
+  status_gpio0: "I_1"
+  status_gpio1: "I_2"
+
+suction_pump2:
+
+  trigger_gpio0: "O_2"
+  status_gpio0: "I_3"
+  status_gpio1: "I_4"
+
+suction_pump3:
+
+  trigger_gpio0: "O_3"
+  status_gpio0: "I_5"
+  status_gpio1: "I_6"
+
+suction_pump4:
+
+  trigger_gpio0: "O_4"
+  status_gpio0: "I_7"
+  status_gpio1: "I_8"
