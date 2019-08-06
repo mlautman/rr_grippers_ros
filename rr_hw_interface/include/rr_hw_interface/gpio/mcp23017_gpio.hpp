@@ -18,6 +18,7 @@ public:
 
 private:
     i2c* _i2c_mcp23017;
+    bool _status; //true -> ready, false -> error
 };
 
 /*

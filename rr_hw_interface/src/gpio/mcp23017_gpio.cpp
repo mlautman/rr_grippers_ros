@@ -13,8 +13,9 @@ namespace rapyuta
 {
 
 McpGpioBoardConfig::McpGpioBoardConfig(uint8_t i2c_bus_instance, uint8_t mcp_address)
+    :_i2c_mcp23017(NULL), _status(false)
 {
-    _i2c_mcp23017 = mcp23xx_init(i2c_bus_instance, mcp_address);
+    _status = mcp23xx_init(i2c_bus_instance, mcp_address, &_i2c_mcp23017);
 };
 
 McpGpioBoardConfig::~McpGpioBoardConfig()
@@ -26,7 +27,11 @@ McpGpioBoardConfig::~McpGpioBoardConfig()
 
 i2c* McpGpioBoardConfig::get_i2c()
 {
-    return _i2c_mcp23017;
+    if(_status){
+        return _i2c_mcp23017;
+    }
+    return NULL;
+    
 };
 
 McpGpio::McpGpio(const std::string& pin_str, const Type& type)
