@@ -48,9 +48,14 @@ add_library(${PROJECT_NAME}
   src/gpio/revpi_gpio.cpp
   src/gpio/mcp23017_gpio.cpp
   src/aio/revpi_aio.cpp
-  )
+)
 
-add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} 
+  ${${PROJECT_NAME}_EXPORTED_TARGETS} 
+  ${catkin_EXPORTED_TARGETS}
+  librevpi
+  mcp23017
+)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
   include 
