@@ -3,6 +3,11 @@
 	<rosparam file="$(find rr_suction_pump)/config/pisco_svb18.yaml" />
     <node pkg="rr_suction_pump" type="rr_suction_pump_action_server" name="suction_pump1" output="screen"/>
     <node pkg="rr_suction_pump" type="rr_suction_pump_action_server" name="suction_pump2" output="screen"/>
-    <node pkg="rr_suction_pump" type="rr_suction_pump_action_server" name="suction_pump3" 	output="screen"/>
+    <node pkg="rr_suction_pump" type="rr_suction_pump_action_server" name="suction_pump3" output="screen"/>
     <node pkg="rr_suction_pump" type="rr_suction_pump_action_server" name="suction_pump4" output="screen"/>
+
+    <node name="pump_relay1" type="relay" pkg="topic_tools" args="/suction_pump_all/suction_pump_action_server/goal /suction_pump1/suction_pump_action_server/goal" />
+    <node name="pump_relay2" type="relay" pkg="topic_tools" args="/suction_pump_all/suction_pump_action_server/goal /suction_pump2/suction_pump_action_server/goal" />
+    <node name="pump_relay3" type="relay" pkg="topic_tools" args="/suction_pump_all/suction_pump_action_server/goal /suction_pump3/suction_pump_action_server/goal" />
+    <node name="pump_relay4" type="relay" pkg="topic_tools" args="/suction_pump_all/suction_pump_action_server/goal /suction_pump4/suction_pump_action_server/goal" />
 </launch>
