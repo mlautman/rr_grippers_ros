@@ -13,7 +13,7 @@ Last Update 20181222, yu.okamoto@rapyuta-robotics.com
 namespace rapyuta
 {
 
-template <class HI, class Config>
+template <class HI_Trigger, class HI_Status, class Config_Trigger, class Config_Status>
 class SuctionPumpActionServer
 {
 public:
@@ -41,12 +41,12 @@ public:
             nh.getParam("status_gpio" + std::to_string(i), status);
             status_gpio.push_back(status);
         }
-        _pump = std::unique_ptr<Pump<HI, Config>>(new Pump<HI, Config>(trigger_gpio, trigger_num, status_gpio, status_num, outputNormallyOn, inputNormallyOn));
+        _pump = std::unique_ptr<Pump<HI_Trigger, HI_Status, Config_Trigger, Config_Status>>(new Pump<HI_Trigger, HI_Status, Config_Trigger, Config_Status>(trigger_gpio, trigger_num, status_gpio, status_num, outputNormallyOn, inputNormallyOn));
     }
 
-    bool init()
+    bool init(Config_Trigger _config_trigger, Config_Status _config_status)
     {
-        if (_pump->init(_config)) {
+        if (_pump->init(_config_trigger, _config_status)) {
             _server.start();
             _pump->set(false); // set off
             ROS_INFO("%s: Started", _action_name.c_str());
@@ -129,8 +129,9 @@ public:
     }
 
 private:
-    std::unique_ptr<Pump<HI, Config>> _pump;
-    Config _config;
+    std::unique_ptr<Pump<HI_Trigger, HI_Status, Config_Trigger, Config_Status>> _pump;
+    Config_Trigger _config_trigger;
+    Config_Status _config_status;
     actionlib::SimpleActionServer<rr_suction_pump::SuctionPumpAction> _server;
     std::string _action_name;
 };
@@ -141,8 +142,9 @@ int main(int argc, char** argv)
 {
     ros::init(argc, argv, "suction_pump_action_server");
     ros::NodeHandle nh("~");
-    rapyuta::SuctionPumpActionServer<rapyuta::RevPiGpio, rapyuta::RevPiGpioBoardConfig> spas(nh, "suction_pump_action_server");
-    if (!spas.init()) {
+    rapyuta::RevPiGpioBoardConfig config;
+    rapyuta::SuctionPumpActionServer<rapyuta::RevPiGpio, rapyuta::RevPiGpio, rapyuta::RevPiGpioBoardConfig, rapyuta::RevPiGpioBoardConfig> spas(nh, "suction_pump_action_server");
+    if (!spas.init(config, config)) {
         return 1;
     }
     ros::spin();
