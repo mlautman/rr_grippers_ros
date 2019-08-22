@@ -14,7 +14,7 @@ namespace rapyuta
 /*
     Pump interface which have trigger and status gpio class
 */
-template <class HI_Trigger, class HI_Status, class Config_Trigger, class Config_Status>
+template <class HI_Trigger, class HI_Status, class Config_Trigger, class Config_Status, class TI, class TO>
 class Pump
 {
 public:
@@ -48,20 +48,20 @@ public:
         return true;
     };
 
-    void set(bool input)
+    void set(TO input)
     {
         if (_outputNormallyOn) {
             for (HI_Trigger_ptr& trigger : _trigger) {
                 trigger->set(!input);
             }
         } else {
-            for (HI_Status_ptr& trigger : _trigger) {
+            for (HI_Trigger_ptr& trigger : _trigger) {
                 trigger->set(input);
             }
         }
     };
 
-    void set(bool input, unsigned int num)
+    void set(TO input, unsigned int num)
     {
         if (_outputNormallyOn) {
             _trigger[num]->set(!input);
@@ -80,9 +80,9 @@ public:
         return true;
     };
 
-    bool get(unsigned int num)
+    TI get(unsigned int num)
     {
-        bool val = _status[num]->get();
+        TI val = _status[num]->get();
         if (_inputNormallyOn) {
             val = !val;
         }

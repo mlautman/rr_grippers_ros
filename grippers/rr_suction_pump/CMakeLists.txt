@@ -23,7 +23,6 @@ add_action_files(
   DIRECTORY action
   FILES SuctionPump.action
 )
-
 generate_messages(
   DEPENDENCIES actionlib_msgs std_msgs
 )
@@ -46,21 +45,35 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME}_action_server
-    src/suction_pump_action_server.cpp
+#gpio - gpio
+add_executable(${PROJECT_NAME}_action_server_trigger_gpio_status_gpio
+    src/suction_pump_action_server_trigger_gpio_status_gpio.cpp
 )
 
-target_link_libraries(${PROJECT_NAME}_action_server
+target_link_libraries(${PROJECT_NAME}_action_server_trigger_gpio_status_gpio
     ${catkin_LIBRARIES}
 )
 
-add_dependencies(${PROJECT_NAME}_action_server ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_action_server_trigger_gpio_status_gpio ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+#gpio - aio
+add_executable(${PROJECT_NAME}_action_server_trigger_gpio_status_aio
+    src/suction_pump_action_server_trigger_gpio_status_aio.cpp
+)
+
+target_link_libraries(${PROJECT_NAME}_action_server_trigger_gpio_status_aio
+    ${catkin_LIBRARIES}
+)
+
+add_dependencies(${PROJECT_NAME}_action_server_trigger_gpio_status_aio ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 
 #############
 ## Install ##
 #############
 
-install(TARGETS ${PROJECT_NAME}_action_server
+install(TARGETS ${PROJECT_NAME}_action_server_trigger_gpio_status_gpio
+    ${PROJECT_NAME}_action_server_trigger_gpio_status_aio
     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

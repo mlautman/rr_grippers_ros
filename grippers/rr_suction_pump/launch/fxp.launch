@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-    <node pkg="rr_suction_pump" type="rr_suction_pump_action_server" name="suction_pump_fxp" output="screen"/>
+    <node pkg="rr_suction_pump" type="rr_suction_pump_action_server_trigger_gpio_status_gpio" name="suction_pump_fxp" output="screen"/>
 	<rosparam file="$(find rr_suction_pump)/config/fxp.yaml" />
 </launch>
